@@ -74,6 +74,7 @@ class _UserCartScreenState extends State<UserCartScreen> {
       appBar: AppBar(
         title: const Text("Shopping Cart",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+            automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 78, 2, 91),
       ),
       body: Container(

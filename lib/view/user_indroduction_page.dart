@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
+import 'package:jewellery_app/view/user_separation.dart';
 
 class OnboardingPage1 extends StatelessWidget {
   const OnboardingPage1({super.key});
@@ -162,7 +162,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           //widget.onSkip?.call(); 
                           Navigator.push(context,
                             MaterialPageRoute(
-                              builder: (context) => UserLogin(),
+                              builder: (context) => SignUpSelectionPage(),
                             ),
                           );
 
@@ -179,7 +179,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           //widget.onFinish?.call();
                            Navigator.push(context,
                             MaterialPageRoute(
-                              builder: (context) => UserLogin(),
+                              builder: (context) => SignUpSelectionPage(),
                             ),
                           );
                         } else {

@@ -44,6 +44,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
         title: const Text("Booking History",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 78, 2, 91),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         decoration: const BoxDecoration(

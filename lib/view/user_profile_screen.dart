@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/employee_module/emp_home.dart';
 import 'package:jewellery_app/view/home.dart';
 import 'package:jewellery_app/view/user_feedback.dart';
 
@@ -9,8 +10,10 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text("Profile",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),
         backgroundColor: const Color.fromARGB(255, 100, 4, 117),
+        automaticallyImplyLeading: false,
+
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -70,12 +73,12 @@ class UserProfileScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                             HomeScreenScreen(),
+                                             EmployeeHomeScreen(),
                                       ),
                                     );
                                   },
                                   child: const Text(
-                                    'Login',
+                                    'EmpHome',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 93, 7, 87),
                                       fontWeight: FontWeight.bold,

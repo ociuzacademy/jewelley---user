@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/user_home.dart';
+import 'package:jewellery_app/view/user_home_screen.dart';
+import 'package:jewellery_app/view/user_module/login/service/user_login_service.dart';
 import 'package:jewellery_app/view/user_module/registration/page/user_register.dart';
 
 class UserLogin extends StatefulWidget {
@@ -14,6 +16,54 @@ class _UserLoginState extends State<UserLogin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+
+   Future<void> _loginVendor() async {
+    if (_formKey.currentState?.validate() == true) {
+      // setState(() {
+      //   _isLoading = true;
+      // });
+
+      try {
+        final responseMessage = await userLoginService(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        if (responseMessage.status == 'approved') {
+        
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('User Login successful')),
+            );
+             Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text(responseMessage.message ?? "Unknown error")),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: $e')),
+          );
+        }
+      } finally {
+        if (mounted) {
+          // setState(() {
+          //   _isLoading = false;
+          // });
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,16 +177,7 @@ class _UserLoginState extends State<UserLogin> {
                         const SizedBox(height: 20),
                         Center(
                           child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomePage(),
-                                  ),
-                                );
-                              }
-                            },
+                            onPressed: _loginVendor,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(255, 93, 7, 87),
                               shape: RoundedRectangleBorder(

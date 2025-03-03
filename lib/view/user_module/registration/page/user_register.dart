@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/user_home.dart';
 import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
+import 'package:jewellery_app/view/user_module/registration/service/register_service.dart';
 
 class UserRegister extends StatefulWidget {
   const UserRegister({super.key});
@@ -16,6 +18,36 @@ class _UserRegisterState extends State<UserRegister> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+
+  // Function to handle form submission
+  Future<void> _submitForm() async {
+    if (_formKey.currentState?.validate() == true) {
+      try {
+        final responseMessage = await userRegistrationService(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+          
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registered successfully')),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const UserLogin(),
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed: $e')),
+        );
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +106,7 @@ class _UserRegisterState extends State<UserRegister> {
                         const SizedBox(height: 40),
                         Center(
                           child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Registration Successful")),
-                                );
-                              }
-                            },
+                            onPressed:_submitForm,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(255, 93, 7, 87),
                               shape: RoundedRectangleBorder(
@@ -139,31 +165,40 @@ class _UserRegisterState extends State<UserRegister> {
   }
 
   Widget _buildInputField(String label, TextEditingController controller, TextInputType type) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(color: Color.fromARGB(255, 93, 19, 83), fontSize: 16),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: const TextStyle(color: Color.fromARGB(255, 93, 19, 83), fontSize: 16),
+      ),
+      TextFormField(
+        controller: controller,
+        keyboardType: type,
+        decoration: InputDecoration(
+          hintText: "Enter your $label",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
-        TextFormField(
-          controller: controller,
-          keyboardType: type,
-          decoration: const InputDecoration(),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "$label is required";
-            }
-            if (label == "Email" && !RegExp(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\$').hasMatch(value)) {
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return "$label is required";
+          }
+          if (label.toLowerCase() == "email") {
+            String pattern =
+                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+            RegExp regex = RegExp(pattern);
+            if (!regex.hasMatch(value.trim())) {
               return "Enter a valid email";
             }
-            return null;
-          },
-        ),
-        const SizedBox(height: 2),
-      ],
-    );
-  }
+          }
+          return null;
+        },
+      ),
+      const SizedBox(height: 8),
+    ],
+  );
+}
+
 
   Widget _buildPasswordField(String label, TextEditingController controller, bool isPassword) {
     return Column(
