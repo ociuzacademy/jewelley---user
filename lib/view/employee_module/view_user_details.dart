@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
-class ViewUserDetailsPage extends StatelessWidget {
-  final Map<String, dynamic> userDetails = {
+class UserDetailsPage extends StatefulWidget {
+  const UserDetailsPage({super.key});
+
+  @override
+  _UserDetailsPageState createState() => _UserDetailsPageState();
+}
+
+class _UserDetailsPageState extends State<UserDetailsPage> {
+  Map<String, dynamic> userDetails = {
     "name": "John Doe",
-    "email": "johndoe@example.com",
-    "phone": "9876543210",
+    "phone": "123-456-7890",
+    "email": "john.doe@example.com",
     "address": "123 Main Street, City, Country",
+    "advancePayment": "₹5,000",
+    "status": "User Meet",
     "purchasedProducts": [
       {
         "name": "Gold Necklace",
         "price": "\$2500",
         "quantity": "2",
-        "image": "assets/images/gold_necklace.jpg",
+        "image": "assets/images/offer.webp",
         "size": "Medium",
         "purchased": "1"
       },
@@ -19,88 +28,95 @@ class ViewUserDetailsPage extends StatelessWidget {
         "name": "Platinum Ring",
         "price": "\$1500",
         "quantity": "5",
-        "image": "assets/images/platinum_ring.jpg",
+        "image": "assets/images/offer.webp",
         "size": "Ring Size 8",
         "purchased": "2"
       }
     ]
   };
 
-  ViewUserDetailsPage({super.key});
+  final List<String> statusStages = ["User Meet", "Make Payment", "User Leave from the Shop"];
+  int currentStatusIndex = 0;
+
+  void updateStatus() {
+    setState(() {
+      if (currentStatusIndex < statusStages.length - 1) {
+        currentStatusIndex++;
+        userDetails["status"] = statusStages[currentStatusIndex];
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Details", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.deepPurple,
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("User Details"),
+        backgroundColor: Color.fromARGB(255, 87, 3, 82),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // User Information
             Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              elevation: 5,
+              margin: const EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Name: ${userDetails['name']}",
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    Text("Email: ${userDetails['email']}", style: const TextStyle(fontSize: 16)),
-                    Text("Phone: ${userDetails['phone']}", style: const TextStyle(fontSize: 16)),
-                    Text("Address: ${userDetails['address']}", style: const TextStyle(fontSize: 16)),
+                    const Text("User Information", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.purple)),
+                    const Divider(),
+                    _buildDetailRow("Name", userDetails["name"]),
+                    _buildDetailRow("Phone", userDetails["phone"]),
+                    _buildDetailRow("Email", userDetails["email"]),
+                    _buildDetailRow("Address", userDetails["address"]),
+                    _buildDetailRow("Advance Payment", userDetails["advancePayment"]),
+                    const SizedBox(height: 10),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: currentStatusIndex == 2 ? Colors.green : Colors.blue,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        ),
+                        onPressed: updateStatus,
+                        child: Text(
+                          userDetails["status"],
+                          style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            
-            // Purchased Products
-            const Text(
-              "Purchased Products",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-            ),
             const SizedBox(height: 10),
+            const Text("Purchased Products", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Expanded(
               child: ListView.builder(
-                itemCount: userDetails['purchasedProducts'].length,
+                itemCount: userDetails["purchasedProducts"].length,
                 itemBuilder: (context, index) {
-                  final product = userDetails['purchasedProducts'][index];
+                  final product = userDetails["purchasedProducts"][index];
                   return Card(
-                    elevation: 4,
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: ListTile(
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(product["image"], width: 50, height: 50, fit: BoxFit.cover),
+                      ),
+                      title: Text(product["name"], style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                product['image'],
-                                height: 150,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text("Name: ${product['name']}",
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text("Price: ${product['price']}", style: const TextStyle(fontSize: 16)),
-                          Text("Quantity Available: ${product['quantity']}",
-                              style: const TextStyle(fontSize: 16)),
-                          Text("Size: ${product['size']}", style: const TextStyle(fontSize: 16)),
-                          Text("Items Purchased: ${product['purchased']}",
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green)),
+                          Text("Price: ${product["price"]}"),
+                          Text("Quantity: ${product["quantity"]}"),
+                          Text("Size: ${product["size"]}"),
+                          Text("Purchased: ${product["purchased"]}"),
                         ],
                       ),
                     ),
@@ -110,6 +126,19 @@ class ViewUserDetailsPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87)),
+          Text(value, style: const TextStyle(fontSize: 16, color: Colors.black54)),
+        ],
       ),
     );
   }

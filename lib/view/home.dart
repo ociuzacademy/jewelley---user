@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/booking_history.dart';
-import 'package:jewellery_app/view/gold_page.dart';
+import 'package:jewellery_app/widgets/gold_page.dart';
 import 'package:jewellery_app/view/trending_items.dart';
 
 class HomeScreenScreen extends StatefulWidget {

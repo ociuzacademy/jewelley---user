@@ -6,5 +6,9 @@ class UserUrl {
 
   static const String user_login ="$userbaseUrl/login/";
   static const String user_register ="$userbaseUrl/register/";
+  static const String gold ="$userbaseUrl/register/";
+  static const String categories ="$userbaseUrl/user_category_list/";
+ 
+  
   
 }

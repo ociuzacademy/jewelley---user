@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/booking_history.dart';
 import 'package:jewellery_app/view/user_cart_screen.dart';
-import 'package:jewellery_app/view/user_home_screen.dart';
+import 'package:jewellery_app/view/user_module/user_home/page/user_home_screen.dart';
 import 'package:jewellery_app/view/user_profile_screen.dart';
 
 

@@ -1,112 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/employee_module/view_user_details.dart';
 
-class EmployeeHomeScreen extends StatelessWidget {
-  const EmployeeHomeScreen({super.key});
-
-  final List<Map<String, dynamic>> userRequests = const [
+class UserRequestPage extends StatelessWidget {
+  final List<Map<String, String>> userRequests = [
     {
       "name": "John Doe",
-      "email": "john@example.com",
-      "purchasedItems": [
-        {"name": "Gold Necklace", "price": "\$800"},
-        {"name": "Silver Bracelet", "price": "\$150"},
-      ],
-      "status": "Pending"
+      "phone": "123-456-7890",
+      "email": "john.doe@example.com",
+      "address": "123 Main Street, City, Country",
+      "advancePayment": "₹5,000",
+      "status": "Request"
     },
     {
       "name": "Jane Smith",
-      "email": "jane@example.com",
-      "purchasedItems": [
-        {"name": "Platinum Ring", "price": "\$1200"},
-      ],
-      "status": "Pending"
-    },
+      "phone": "987-654-3210",
+      "email": "jane.smith@example.com",
+      "address": "456 Oak Avenue, City, Country",
+      "advancePayment": "₹8,000",
+      "status": "Request"
+    }
   ];
+
+  UserRequestPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Requests"),
-        backgroundColor: Colors.deepPurple,
+        title: Text("User Requests",style: TextStyle(color: Colors.white)),
+        backgroundColor: Color.fromARGB(255, 87, 3, 82),
+        automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
+        padding: EdgeInsets.all(10),
         itemCount: userRequests.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(userRequests[index]["name"]),
-            subtitle: Text(userRequests[index]["email"]),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.deepPurple),
+          final request = userRequests[index];
+          return GestureDetector(
             onTap: () {
+              // Handle card tap event
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UserDetailsPage(user: userRequests[index]),
+                  builder: (context) => UserDetailsPage(),
                 ),
               );
             },
+            child: Card(
+              elevation: 5,
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Name: ${request["name"]}",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 5),
+                    Text("Phone: ${request["phone"]}"),
+                    Text("Email: ${request["email"]}"),
+                    Text("Address: ${request["address"]}"),
+                    Text("Advance Payment: ${request["advancePayment"]}"),
+                    SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow,
+                          foregroundColor: Colors.black,
+                        ),
+                        onPressed: () {},
+                        child: Text(request["status"]!),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
           );
         },
-      ),
-    );
-  }
-}
-
-class UserDetailsPage extends StatefulWidget {
-  final Map<String, dynamic> user;
-  const UserDetailsPage({super.key, required this.user});
-
-  @override
-  _UserDetailsPageState createState() => _UserDetailsPageState();
-}
-
-class _UserDetailsPageState extends State<UserDetailsPage> {
-  bool isInStore = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.user["name"]),
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Email: ${widget.user["email"]}",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            const Text("Purchased Items:",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.user["purchasedItems"].length,
-                itemBuilder: (context, index) {
-                  var item = widget.user["purchasedItems"][index];
-                  return ListTile(
-                    title: Text(item["name"]),
-                    subtitle: Text("Price: ${item["price"]}"),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  isInStore = !isInStore;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isInStore ? Colors.red : Colors.green,
-              ),
-              child: Text(isInStore ? "User Left Store" : "User Entered Store"),
-            ),
-          ],
-        ),
       ),
     );
   }

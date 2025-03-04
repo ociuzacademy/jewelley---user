@@ -8,13 +8,21 @@ class JewelryProductPage extends StatefulWidget {
 }
 
 class _JewelryProductPageState extends State<JewelryProductPage> {
-  String selectedSize = 'Small';
-  final List<String> sizes = ['8', '9', '10','11','12',];
-  int quantity = 1;
+  String selectedSize = '8';
+  final List<String> sizes = ['8', '9', '10', '11', '12'];
+  String selectedWeight = '10g';
+  final List<String> weights = ['5g', '10g', '15g', '20g'];
+  int quantity = 1;//not changed
   double pricePerItem = 1200;
   double totalPrice = 1200;
 
   final TextEditingController _quantityController = TextEditingController();
+
+  final List<String> imageList = [
+    "assets/images/jewel1.webp",
+    "assets/images/jewel2.webp",
+    "assets/images/jewel3.webp"
+  ];
 
   @override
   void initState() {
@@ -33,16 +41,13 @@ class _JewelryProductPageState extends State<JewelryProductPage> {
     final Map<String, dynamic> orderData = {
       "product": "Gold Necklace",
       "size": selectedSize,
+      "weight": selectedWeight,
       "quantity": quantity,
       "total_price": totalPrice,
     };
 
-    // Simulating a POST request with a delay
     await Future.delayed(const Duration(seconds: 2));
-    
-    // Print output to console (Replace this with actual HTTP POST request)
     debugPrint("Order Submitted: $orderData");
-    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Order Submitted Successfully")),
     );
@@ -62,23 +67,20 @@ class _JewelryProductPageState extends State<JewelryProductPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
+            SizedBox(
+              height: 300,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: imageList.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.asset(imageList[index], height: 300, fit: BoxFit.cover),
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.asset("assets/images/offer.webp", height: 300, fit: BoxFit.cover),
-                ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 20),
@@ -88,115 +90,75 @@ class _JewelryProductPageState extends State<JewelryProductPage> {
             ),
             const SizedBox(height: 10),
             const Text(
-              "A stunning 22K gold necklace with intricate designs, perfect for special occasions.A stunning 22K gold necklace with intricate designs, perfect for special occasions.",
+              "A stunning 22K gold necklace with intricate designs, perfect for special occasions.",
               style: TextStyle(fontSize: 16, color: Colors.black87),
             ),
             const SizedBox(height: 20),
-            // const Text("Gold Karat: 22K", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
-            // const SizedBox(height: 20),
-
-            // Size Selection (Horizontal List)
             const Text("Select Size", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
             const SizedBox(height: 10),
-            SizedBox(
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: sizes.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedSize = sizes[index];
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: selectedSize == sizes[index] ? Colors.deepPurple : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        sizes[index],
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: selectedSize == sizes[index] ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Quantity Selector
-            // const Text("Quantity:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
-            // const SizedBox(height: 10),
-            Row(
-              children: [
-                const Text("Quantity ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
-                IconButton(
-                  onPressed: () {
-                    if (quantity > 1) {
-                      setState(() {
-                        quantity--;
-                        updatePrice();
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.deepPurple),
-                  splashRadius: 20,
-                ),
-                SizedBox(
-                  width: 50,
-                  child: TextField(
-                    controller: _quantityController,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    onSubmitted: (value) {
-                      int? newQuantity = int.tryParse(value);
-                      if (newQuantity != null && newQuantity > 0) {
-                        setState(() {
-                          quantity = newQuantity;
-                          updatePrice();
-                        });
-                      } else {
-                        _quantityController.text = quantity.toString();
-                      }
-                    },
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
+            Wrap(
+              children: sizes.map((size) {
+                return GestureDetector(
+                  onTap: () {
                     setState(() {
-                      quantity++;
-                      updatePrice();
+                      selectedSize = size;
                     });
                   },
-                  icon: const Icon(Icons.add_circle_outline, color: Colors.deepPurple),
-                  splashRadius: 20,
-                ),
-              ],
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: selectedSize == size ? Colors.deepPurple : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      size,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: selectedSize == size ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
-
             const SizedBox(height: 20),
-
-            // Updated Price
+            const Text("Select Weight", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
+            const SizedBox(height: 10),
+            Wrap(
+              children: weights.map((weight) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedWeight = weight;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: selectedWeight == weight ? Colors.deepPurple : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      weight,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: selectedWeight == weight ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 20),
             Text(
               "Total Price: \$${totalPrice.toStringAsFixed(2)}",
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
-
             const SizedBox(height: 30),
-
-            // Action Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -207,9 +169,7 @@ class _JewelryProductPageState extends State<JewelryProductPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   child: const Text("Add to Cart", style: TextStyle(color: Colors.white, fontSize: 16)),
                 ),
@@ -220,9 +180,7 @@ class _JewelryProductPageState extends State<JewelryProductPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   child: const Text("Book Now", style: TextStyle(color: Colors.white, fontSize: 16)),
                 ),

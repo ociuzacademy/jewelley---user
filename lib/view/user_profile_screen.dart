@@ -73,7 +73,7 @@ class UserProfileScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                             EmployeeHomeScreen(),
+                                             HomePage(),
                                       ),
                                     );
                                   },
