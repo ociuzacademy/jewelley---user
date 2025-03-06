@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/user_home/model/user_home_model.dart';
 import 'package:jewellery_app/view/user_module/user_home/service/user_home_service.dart';
-import 'package:jewellery_app/widgets/gold_page.dart';
-import 'package:jewellery_app/view/platinum_page.dart';
-import 'package:jewellery_app/view/silver_page.dart';
+import 'package:jewellery_app/view/user_module/gold_jewels/page/gold_page.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -14,34 +11,24 @@ class UserHomeScreen extends StatelessWidget {
     {
       "name": "Gold Necklace",
       "price": "\$250",
-      "image": "assets/images/gold_necklace.jpg"
+      "image": "assets//images/offer.webp"
     },
     {
       "name": "Platinum Ring",
       "price": "\$450",
-      "image": "assets/images/platinum_ring.jpg"
+      "image": "assets//images/offer.webp"
     },
     {
       "name": "Silver Bracelet",
       "price": "\$150",
-      "image": "assets/images/silver_bracelet.jpg"
+      "image": "assets//images/offer.webp"
     },
     {
       "name": "Diamond Earrings",
       "price": "\$600",
-      "image": "assets/images/diamond_earrings.jpg"
+      "image": "assets//images/offer.webp"
     },
   ];
-
-  // static final List<Map<String, dynamic>> categories = [
-  //   {"name": "Gold", "icon": Icons.star, "page": const GoldJewelryPage()},
-  //   {"name": "Silver", "icon": Icons.circle, "page": const SilverJewelryPage()},
-  //   {
-  //     "name": "Platinum",
-  //     "icon": Icons.diamond,
-  //     "page": const PlatinumJewelryPage()
-  //   },
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +57,9 @@ class UserHomeScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/images/background.jpg"), // Add your background image
+            image: AssetImage("assets/images/offer2.jpg"),
             fit: BoxFit.cover,
-            opacity: 0.2, // Adjust for visibility
+            opacity: 0.2,
           ),
           gradient: LinearGradient(
             colors: [
@@ -107,8 +93,7 @@ class UserHomeScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: "Search Jewelry...",
                     hintStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon:
-                        const Icon(Icons.search, color: Colors.deepPurple),
+                    prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
                     filled: true,
                     fillColor: Colors.deepPurple.shade50,
                     border: OutlineInputBorder(
@@ -121,18 +106,17 @@ class UserHomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Categories Section
-    
+              const Text(
+                "Categories",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 78, 2, 91),
+                ),
+              ),
+              const SizedBox(height: 10),         // using future builder
 
-const Text(
-  "Categories",
-  style: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    color: Color.fromARGB(255, 78, 2, 91),
-  ),
-),
-const SizedBox(height: 10),
-FutureBuilder<List<CategoryListModel>>(
+             FutureBuilder<List<CategoryListModel>>(
   future: categoryListService(),
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -166,45 +150,72 @@ FutureBuilder<List<CategoryListModel>>(
 
     List<CategoryListModel> categories = snapshot.data!;
 
-    return Column(
-      children: categories.map((category) {
-        return Column(
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: CachedNetworkImage(
-                imageUrl:'${UserUrl.userbaseUrl}/${category.iconUrl!}',
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          final category = categories[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => JewelryPage(category_id :category.id ?? 0),
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error, size: 40, color: Colors.red),
-                fit: BoxFit.cover,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: ClipOval(
+                      child: Image.network(
+                        '${UserUrl.baseUrl}/${category.iconUrl!}',
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) => const Icon(
+                          Icons.error,
+                          size: 40,
+                          color: Colors.red,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    category.name!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 78, 2, 91),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              category.name!,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 78, 2, 91),
-              ),
-            ),
-          ],
-        );
-      }).toList(),
+          );
+        },
+      ),
     );
   },
 ),
 
 
-
               // Trending Items Section
-               Text(
+              const Text(
                 "Trending Ornaments",
                 style: TextStyle(
                   fontSize: 18,
@@ -245,11 +256,12 @@ class JewelryItem extends StatelessWidget {
   final String price;
   final String imageUrl;
 
-  const JewelryItem(
-      {super.key,
-      required this.name,
-      required this.price,
-      required this.imageUrl});
+  const JewelryItem({
+    super.key,
+    required this.name,
+    required this.price,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -261,10 +273,8 @@ class JewelryItem extends StatelessWidget {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(imageUrl,
-                  fit: BoxFit.cover, width: double.infinity),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(imageUrl, fit: BoxFit.cover, width: double.infinity),
             ),
           ),
           Padding(

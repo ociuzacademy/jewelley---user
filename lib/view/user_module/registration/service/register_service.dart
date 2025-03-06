@@ -10,6 +10,7 @@ Future<UserRegisterModel>userRegistrationService({
   required String name,
   required String email,
   required String password,
+  required String phone,
   
  
 }) async {
@@ -18,6 +19,7 @@ Future<UserRegisterModel>userRegistrationService({
       "name": name,
       "email": email,
       "password": password,
+      "phone":phone,
       
     };
 
