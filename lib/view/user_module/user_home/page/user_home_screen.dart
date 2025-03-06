@@ -11,22 +11,22 @@ class UserHomeScreen extends StatelessWidget {
     {
       "name": "Gold Necklace",
       "price": "\$250",
-      "image": "assets//images/offer.webp"
+      "image": "assets/images/introd1.png"
     },
     {
       "name": "Platinum Ring",
       "price": "\$450",
-      "image": "assets//images/offer.webp"
+      "image": "assets/images/introd1.png"
     },
     {
       "name": "Silver Bracelet",
       "price": "\$150",
-      "image": "assets//images/offer.webp"
+      "image": "assets/images/introd1.png"
     },
     {
       "name": "Diamond Earrings",
       "price": "\$600",
-      "image": "assets//images/offer.webp"
+      "image": "assets/images/introd1.png"
     },
   ];
 

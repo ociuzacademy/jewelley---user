@@ -121,7 +121,7 @@ class JewelryItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => JewelryProductPage(),//JewelryProductPage(product_id: product.id.toString(),),
+            builder: (context) => JewelryProductPage(productId:product.id!.toString()),//
           ),
         );
       },

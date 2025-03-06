@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/single_product/model/single_product_model.dart';
 
-Future<SingleProductModel> singleProductList(
+Future<SingleProductModel> singleProductService(
   {
     required String product_id,
   }
@@ -27,8 +27,6 @@ Future<SingleProductModel> singleProductList(
       final response = SingleProductModel.fromJson(decoded);
           
       return response;
-      // final response = decoded.map((item) => SingleProductListModel.fromJson(item)).toList();
-      // return response;
     } else {
       throw Exception('Failed to load response');
     }

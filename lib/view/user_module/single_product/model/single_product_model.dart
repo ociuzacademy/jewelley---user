@@ -20,7 +20,7 @@ class SingleProductModel {
     String? mainImage;
     List<String>? images;
     List<String>? sizes;
-    List<int>? weights;
+    List<double>? weights;
 
     SingleProductModel({
         this.id,
@@ -49,7 +49,7 @@ class SingleProductModel {
         mainImage: json["main_image"],
         images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
         sizes: json["sizes"] == null ? [] : List<String>.from(json["sizes"]!.map((x) => x)),
-        weights: json["weights"] == null ? [] : List<int>.from(json["weights"]!.map((x) => x)),
+        weights: json["weights"] == null ? [] : List<double>.from(json["weights"]!.map((x) => x?.toDouble())),
     );
 
     Map<String, dynamic> toJson() => {

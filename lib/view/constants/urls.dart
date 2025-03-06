@@ -1,6 +1,6 @@
 class UserUrl {
   // Base URL for the API server 
-  static const String baseUrl="https://nkdz72g4-8001.inc1.devtunnels.ms/";
+  static const String baseUrl="https://nkdz72g4-8001.inc1.devtunnels.ms";
   static const String userbaseUrl="$baseUrl/userapp";
 
 
@@ -9,6 +9,7 @@ class UserUrl {
   static const String gold ="$userbaseUrl/register/";
   static const String categories ="$userbaseUrl/user_category_list/";
   static const String single_category ="$userbaseUrl/products/";
+  static const String book_product ="$userbaseUrl/book_products/";
   
  
   
