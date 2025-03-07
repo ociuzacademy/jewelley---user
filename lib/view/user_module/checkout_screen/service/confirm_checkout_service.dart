@@ -1,27 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';  // Add this import for formatting
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/respones_single_product_model.dart';
+import 'package:jewellery_app/view/user_module/checkout_screen/model/confirm_checkout_model.dart';
 
-Future<SingleProductResponesModel> buyProductService({
-  required String product_id,
-  required String quantity,
-  required String weight,
-  required String size,
+Future<ConfirmCheckoutModel> confirmCheckoutService({
+  required String booking_id,
+  required String visit_date,
+  required String visit_time,
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
+   
     Map<String, dynamic> param = {
-      "user_id": 18,
-      "product_id": product_id,
-      "quantity": quantity,
-      "size" : size,
-      "weight":weight,
+      "user": 18.toString(),
+      "visit_date": visit_date, 
+      "visit_time": visit_time, 
+      "booking":booking_id,
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.book_product),
+      Uri.parse(UserUrl.user_confirm_checkout),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -30,8 +30,7 @@ Future<SingleProductResponesModel> buyProductService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = SingleProductResponesModel.fromJson(decoded);
-
+      final response = ConfirmCheckoutModel.fromJson(decoded);
       return response;
     } else {
       final Map<String, dynamic> errorResponse = jsonDecode(resp.body);

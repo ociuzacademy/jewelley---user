@@ -2,26 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/respones_single_product_model.dart';
+import 'package:jewellery_app/view/user_module/user_feedback/model/feedback_model.dart';
 
-Future<SingleProductResponesModel> buyProductService({
-  required String product_id,
-  required String quantity,
-  required String weight,
-  required String size,
+Future<UserFeedbackModel> userFeedbackService({
+  required String rating,
+  required String feedback,
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user_id": 18,
-      "product_id": product_id,
-      "quantity": quantity,
-      "size" : size,
-      "weight":weight,
+      "user": 18,
+      "rating": rating,
+      "feedback_text" :feedback,
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.book_product),
+      Uri.parse(UserUrl.user_feedback), 
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -29,14 +24,21 @@ Future<SingleProductResponesModel> buyProductService({
     );
 
     if (resp.statusCode == 201) {
-      final dynamic decoded = jsonDecode(resp.body);
-      final response = SingleProductResponesModel.fromJson(decoded);
+      /**
+       *  final List<dynamic> decoded = jsonDecode(resp.body);
+      final response =
+          decoded.map((item) => ProductModel.fromJson(item)).toList();
+      return response;
+       */
 
+      final dynamic decoded = jsonDecode(resp.body);
+      final response = UserFeedbackModel.fromJson(decoded);
+          
       return response;
     } else {
       final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
       throw Exception(
-        '${errorResponse['message'] ?? 'Unknown error'}',
+        'Failed to login: ${errorResponse['message'] ?? 'Unknown error'}',
       );
     }
   } on SocketException {

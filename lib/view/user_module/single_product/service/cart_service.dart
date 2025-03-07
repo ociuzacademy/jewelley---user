@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/respones_single_product_model.dart';
+import 'package:jewellery_app/view/user_module/single_product/model/cart_model.dart';
 
-Future<SingleProductResponesModel> buyProductService({
+Future<CartItemModel> cartService({
   required String product_id,
   required String quantity,
   required String weight,
@@ -21,7 +21,7 @@ Future<SingleProductResponesModel> buyProductService({
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.book_product),
+      Uri.parse(UserUrl.cart_product),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -30,7 +30,7 @@ Future<SingleProductResponesModel> buyProductService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = SingleProductResponesModel.fromJson(decoded);
+      final response = CartItemModel.fromJson(decoded);
 
       return response;
     } else {

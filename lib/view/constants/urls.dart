@@ -10,6 +10,13 @@ class UserUrl {
   static const String categories ="$userbaseUrl/user_category_list/";
   static const String single_category ="$userbaseUrl/products/";
   static const String book_product ="$userbaseUrl/book_products/";
+  static const String user_profile="$userbaseUrl/view_user_profile/";
+  static const String user_feedback="$userbaseUrl/submit_feedback/";
+  static const String user_checkout="$userbaseUrl/payments/";
+  static const String user_confirm_checkout="$userbaseUrl/checkout/";
+  static const String cart_product="$userbaseUrl/cart_products/";
+  static const String view_cart="$userbaseUrl/view_cart/";
+
   
  
   

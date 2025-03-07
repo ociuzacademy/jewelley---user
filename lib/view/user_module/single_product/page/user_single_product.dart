@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_checkout_page.dart';
+import 'package:jewellery_app/view/user_cart_screen.dart';
+import 'package:jewellery_app/view/user_module/checkout_screen/page/user_checkout_page.dart';
+import 'package:jewellery_app/view/user_module/single_product/service/cart_service.dart';
 import 'package:jewellery_app/view/user_module/single_product/service/respones_single_service.dart';
 import 'package:jewellery_app/view/user_module/single_product/service/single_product_service.dart';
 
@@ -57,7 +59,7 @@ class _JewelryProductPageState extends State<JewelryProductPage>
         size: selectedSize.toString(),
         weight: selectedWeight.toString(),
       );
-      
+
       if (responseMessage.status == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Product Booked')),
@@ -65,7 +67,9 @@ class _JewelryProductPageState extends State<JewelryProductPage>
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CheckoutScreen(),
+            builder: (context) => CheckoutScreen(
+              booking_id: responseMessage.bookingId.toString(),
+            ),
           ),
         );
       } else {
@@ -80,18 +84,88 @@ class _JewelryProductPageState extends State<JewelryProductPage>
     }
   }
 
-  void addToCart() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Item added to cart!")),
-    );
+  // futute for post method
+  Future<void> _addToCart() async {
+    try {
+      final responseMessage = await cartService(
+        product_id: widget.productId,
+        quantity: quantity.toString(),
+        size: selectedSize.toString(),
+        weight: selectedWeight.toString(),
+      );
+
+      if (responseMessage.status == 'success') {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true, // Allows it to take full width
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          builder: (context) {
+            return Container(
+              width: MediaQuery.of(context).size.width, // Make it full width
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Text(
+                  //   'Product added to cart',
+                  //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  // ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Product added to cart',
+                    style: TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserCartScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'View Cart',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 93, 7, 87),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(responseMessage.message ?? "Unkown error")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Product purchase failed: $e')),
+      );
+    }
   }
+
+  // void addToCart() {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     const SnackBar(content: Text("Item added to cart!")),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     super.build(context); // Ensure the mixin is used
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Jewelry Details",
+        title: const Text("Jewellery Details",
             style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.deepPurple,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -252,7 +326,7 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                           style: TextStyle(fontSize: 18, color: Colors.red)),
                     const SizedBox(height: 20),
                     Text(
-                      "Total Price: \$${(double.parse(singleitem.price!) * quantity).toStringAsFixed(2)}",
+                      "Total Price: \u{20B9}${(double.parse(singleitem.price!) * quantity).toStringAsFixed(2)}",
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -273,7 +347,7 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                         ),
                         const SizedBox(width: 50),
                         ElevatedButton(
-                          onPressed: addToCart,
+                          onPressed: _addToCart,
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green),
                           child: const Text("Add to Cart",

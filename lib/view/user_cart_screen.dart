@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/user_checkout_page.dart';
+import 'package:jewellery_app/view/user_module/checkout_screen/page/user_checkout_page.dart';
 
 class UserCartScreen extends StatefulWidget {
   const UserCartScreen({super.key});
@@ -164,7 +164,7 @@ class _UserCartScreenState extends State<UserCartScreen> {
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutScreen()));
+                    //  Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

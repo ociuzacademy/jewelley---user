@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/user_home/model/user_home_model.dart';
 import 'package:jewellery_app/view/user_module/user_home/service/user_home_service.dart';
-import 'package:jewellery_app/view/user_module/gold_jewels/page/gold_page.dart';
+import 'package:jewellery_app/view/user_module/jewellery_list/page/gold_page.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});

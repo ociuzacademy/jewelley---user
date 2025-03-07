@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/gold_jewels/model/gold_jewel_model.dart';
-import 'package:jewellery_app/view/user_module/gold_jewels/service/gold_jewel_service.dart';
+import 'package:jewellery_app/view/user_module/jewellery_list/model/gold_jewel_model.dart';
+import 'package:jewellery_app/view/user_module/jewellery_list/service/gold_jewel_service.dart';
 import 'package:jewellery_app/view/user_module/single_product/page/user_single_product.dart';
 
 

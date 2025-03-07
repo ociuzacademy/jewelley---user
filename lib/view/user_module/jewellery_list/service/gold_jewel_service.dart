@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/gold_jewels/model/gold_jewel_model.dart';
+import 'package:jewellery_app/view/user_module/jewellery_list/model/gold_jewel_model.dart';
 
 Future<List<ProductListModel>> productList({
   required String category_id,
