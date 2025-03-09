@@ -25,7 +25,7 @@ class _JewelryPageState extends State<JewelryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gold Jewelry", style: TextStyle(color: Colors.deepPurple)),
+        title: const Text("Jewellery", style: TextStyle(color: Colors.deepPurple)),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.deepPurple),
         elevation: 0,

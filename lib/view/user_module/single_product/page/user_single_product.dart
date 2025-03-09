@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_cart_screen.dart';
+import 'package:jewellery_app/view/user_module/view_cart/page/user_cart_screen.dart';
 import 'package:jewellery_app/view/user_module/checkout_screen/page/user_checkout_page.dart';
 import 'package:jewellery_app/view/user_module/single_product/service/cart_service.dart';
 import 'package:jewellery_app/view/user_module/single_product/service/respones_single_service.dart';

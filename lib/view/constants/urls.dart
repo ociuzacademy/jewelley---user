@@ -16,6 +16,7 @@ class UserUrl {
   static const String user_confirm_checkout="$userbaseUrl/checkout/";
   static const String cart_product="$userbaseUrl/cart_products/";
   static const String view_cart="$userbaseUrl/view_cart/";
+  static const String cart_item_delete="$userbaseUrl/remove_cart_items/";
 
   
  

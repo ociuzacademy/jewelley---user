@@ -2,33 +2,30 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/checkout_screen/model/confirm_checkout_model.dart';
+import 'package:jewellery_app/view/user_module/view_cart/model/cartitem_delete_model.dart';
 
-Future<ConfirmCheckoutModel> confirmCheckoutService({
-  required String booking_id,
-  required String visit_date,
-  required String visit_time,
+Future<CartDeleteModel> cartDeleteService({
+  required String cart_item_id,
+  
 }) async {
   try {
    
     Map<String, dynamic> param = {
-      "user": 18.toString(),
-      "visit_date": visit_date, 
-      "visit_time": visit_time, 
-      "booking":booking_id,
+     
+      "id":cart_item_id,
     };
 
-    final resp = await http.post(
-      Uri.parse(UserUrl.user_confirm_checkout),
-      body: jsonEncode(param),
+    final resp = await http.delete(
+      Uri.parse(UserUrl.cart_item_delete),
+      //body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
       },
     );
 
-    if (resp.statusCode == 201) {
+    if (resp.statusCode == 200) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = ConfirmCheckoutModel.fromJson(decoded);
+      final response = CartDeleteModel.fromJson(decoded);
       return response;
     } else {
       final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
