@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-SingleProductModel singleProductModelFromJson(String str) => SingleProductModel.fromJson(json.decode(str));
+List<SingleProductModel> singleProductModelFromJson(String str) => List<SingleProductModel>.from(json.decode(str).map((x) => SingleProductModel.fromJson(x)));
 
-String singleProductModelToJson(SingleProductModel data) => json.encode(data.toJson());
+String singleProductModelToJson(List<SingleProductModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SingleProductModel {
     int? id;
@@ -20,7 +20,7 @@ class SingleProductModel {
     String? mainImage;
     List<String>? images;
     List<String>? sizes;
-    List<double>? weights;
+    List<String>? weights;
 
     SingleProductModel({
         this.id,
@@ -49,7 +49,7 @@ class SingleProductModel {
         mainImage: json["main_image"],
         images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
         sizes: json["sizes"] == null ? [] : List<String>.from(json["sizes"]!.map((x) => x)),
-        weights: json["weights"] == null ? [] : List<double>.from(json["weights"]!.map((x) => x?.toDouble())),
+        weights: json["weights"] == null ? [] : List<String>.from(json["weights"]!.map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/user_home.dart';
 import 'package:jewellery_app/view/user_indroduction_page.dart';
-import 'package:jewellery_app/view/user_intro_screen.dart';
-import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 void main() {
@@ -36,9 +33,8 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-      
       ),
-      home:  AnimatedSplashScreen(
+      home: AnimatedSplashScreen(
         splash: Image.asset(
           'assets/images/irenne.jpg',
           height: 150, // Set the height
@@ -46,16 +42,14 @@ class MyApp extends StatelessWidget {
           fit: BoxFit.cover, // Adjust how the image fits its container
           // color: Colors.green, // Apply a tint color with transparency
           alignment: Alignment.center, // Align the image within its container
-          
-          
         ),
         backgroundColor: const Color.fromRGBO(43, 13, 65, 1.0),
-
+    
         splashTransition: SplashTransition.scaleTransition,
         // Center(
         // child: Text(r
         //   'Splash Screen',style: TextStyle(fontSize: 17),
-
+    
         // ),
         // ),
         nextScreen: OnboardingPage1(),

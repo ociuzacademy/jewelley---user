@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/user_home.dart';
-import 'package:jewellery_app/view/user_module/login/service/user_login_service.dart';
+import 'package:jewellery_app/view/employee_module/emp_home.dart';
+import 'package:jewellery_app/view/employee_module/emp_login/service/emp_login_service.dart';
 import 'package:jewellery_app/view/user_module/registration/page/user_register.dart';
 
-class UserLogin extends StatefulWidget {
-  const UserLogin({super.key});
+class EmployeeLoginPage extends StatefulWidget {
+  const EmployeeLoginPage({super.key});
 
   @override
-  _UserLoginState createState() => _UserLoginState();
+  _EmployeeLoginPageState createState() => _EmployeeLoginPageState();
 }
 
-class _UserLoginState extends State<UserLogin> {
+class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
 
-  Future<void> _loginVendor() async {
+  Future<void> _loginEmployee() async {
     if (_formKey.currentState?.validate() == true) {
       setState(() {
         _isLoading = true;
       });
 
       try {
-        final responseMessage = await userLoginService(
+        final responseMessage = await empLoginService(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
-        if (responseMessage.status == 'approved') {
+        if (responseMessage.message == 'Login successful') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('User Login successful')),
           );
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const HomePage(),
+              builder: (context) => const EmployeeHomePage(),
             ),
           );
         } else {
@@ -54,9 +54,9 @@ class _UserLoginState extends State<UserLogin> {
         }
       } finally {
         if (mounted) {
-          // setState(() {
-          //   _isLoading = false;
-          // });
+          setState(() {
+            _isLoading = false;
+          });
         }
       }
     }
@@ -74,8 +74,8 @@ class _UserLoginState extends State<UserLogin> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 26, 27, 27),
-                  Color.fromARGB(255, 87, 3, 82),
+                  Color(0xFFD4AF37), // Gold color
+                  Color(0xFFC5A132), // Darker gold color
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -86,11 +86,18 @@ class _UserLoginState extends State<UserLogin> {
             top: screenHeight * 0.15,
             left: screenWidth * 0.1,
             child: const Text(
-              "Hello\nSign In !",
+              "Welcome\nBack!",
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 36,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black54,
+                    offset: Offset(2.0, 2.0),
+                  ),
+                ],
               ),
             ),
           ),
@@ -99,12 +106,19 @@ class _UserLoginState extends State<UserLogin> {
             child: Container(
               height: screenHeight * 0.6,
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(80),
-                  topRight: Radius.circular(80),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  ),
+                ],
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1, vertical: screenHeight * 0.05),
@@ -118,16 +132,24 @@ class _UserLoginState extends State<UserLogin> {
                         const Text(
                           "Email",
                           style: TextStyle(
-                            color: Color.fromARGB(255, 93, 19, 83),
+                            color: Color(0xFFD4AF37), // Gold color
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(height: 10),
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            labelText: "abc@gmail.com",
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: "Enter your email",
+                            hintStyle: TextStyle(color: Colors.grey[500]),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -136,23 +158,32 @@ class _UserLoginState extends State<UserLogin> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 20),
                         const Text(
                           "Password",
                           style: TextStyle(
-                            color: Color.fromARGB(255, 93, 19, 83),
+                            color: Color(0xFFD4AF37), // Gold color
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(height: 10),
                         TextFormField(
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
-                            labelText: "******",
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: "Enter your password",
+                            hintStyle: TextStyle(color: Colors.grey[500]),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                color: Color(0xFFD4AF37), // Gold color
                               ),
                               onPressed: () {
                                 setState(() {
@@ -171,51 +202,73 @@ class _UserLoginState extends State<UserLogin> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 30),
                         Center(
                           child: _isLoading
-                              ? const CircularProgressIndicator()
+                              ? const CircularProgressIndicator(
+                                  color: Color(0xFFD4AF37), // Gold color
+                                )
                               : ElevatedButton(
-                                  onPressed: _loginVendor,
+                                  onPressed: _loginEmployee,
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color.fromARGB(255, 93, 7, 87),
+                                    backgroundColor: Color(0xFFD4AF37), // Gold color
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                                    elevation: 5,
                                   ),
-                                  child: const Text("Login", style: TextStyle(fontSize: 18, color: Colors.white)),
+                                  child: const Text(
+                                    "Login",
+                                    style: TextStyle(fontSize: 18, color: Colors.white),
+                                  ),
                                 ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 20),
                         Align(
-                          alignment: Alignment.bottomRight,
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text("Don't have an account?", style: TextStyle(color: Colors.black)),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const UserRegister(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Sign Up',
+                          alignment: Alignment.center,
+                          child: RichText(
+                              text: const TextSpan(
+                                text: "Don't have an account? ",
+                                style: TextStyle(color: Colors.black),
+                                children: [
+                                  TextSpan(
+                                    text: '\nContact with the shop',
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 93, 7, 87),
+                                      color: Color(0xFFD4AF37), // Gold color
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
+                          
+                          
+                          // TextButton(
+                          //   onPressed: () {
+                          //     Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //         builder: (context) => const UserRegister(),
+                          //       ),
+                          //     );
+                          //   },
+                          //   child: RichText(
+                          //     text: const TextSpan(
+                          //       text: "Don't have an account? ",
+                          //       style: TextStyle(color: Colors.black),
+                          //       children: [
+                          //         TextSpan(
+                          //           text: '\nContact with the shop',
+                          //           style: TextStyle(
+                          //             color: Color(0xFFD4AF37), // Gold color
+                          //             fontWeight: FontWeight.bold,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ),
                       ],
                     ),

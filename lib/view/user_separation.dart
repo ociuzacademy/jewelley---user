@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/employee_module/emp_login/page/emp_login.dart';
+import 'package:jewellery_app/view/employee_module/employee_login/page/emp_login.dart';
 import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
 
 
@@ -61,7 +63,7 @@ class SignUpSelectionPage extends StatelessWidget {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                const Color.fromRGBO(194, 154, 119, 1.0),
+                                const Color.fromARGB(255, 95, 27, 109),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -75,18 +77,18 @@ class SignUpSelectionPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
 
-                        // Sign Up as a Vendor Button
+                        // Sign Up as a Employee Button
                         ElevatedButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const UserLogin(),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const EmployeeLoginPage(),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromRGBO(29, 107, 59, 1),
+                            backgroundColor: Color.fromRGBO(206, 173, 27, 1),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -94,7 +96,7 @@ class SignUpSelectionPage extends StatelessWidget {
                             minimumSize: const Size(double.infinity, 50),
                           ),
                           child: const Text(
-                            "Login as a Vendor",
+                            "Login as a Employee",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),

@@ -234,6 +234,8 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                     style:
                         const TextStyle(fontSize: 16, color: Colors.black87)),
                 const SizedBox(height: 20),
+
+                
                 const Text("Select Size",
                     style: TextStyle(
                         fontSize: 18,
@@ -354,6 +356,7 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16)),
                         ),
+                        
                       ],
                     ),
                   ],

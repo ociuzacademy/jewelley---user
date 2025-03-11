@@ -2,6 +2,7 @@ class UserUrl {
   // Base URL for the API server 
   static const String baseUrl="https://nkdz72g4-8001.inc1.devtunnels.ms";
   static const String userbaseUrl="$baseUrl/userapp";
+  static const String empbaseUrl="$baseUrl/employeeapp";
 
 
   static const String user_login ="$userbaseUrl/login/";
@@ -18,7 +19,11 @@ class UserUrl {
   static const String view_cart="$userbaseUrl/view_cart/";
   static const String cart_item_delete="$userbaseUrl/remove_cart_items/";
 
-  
+  // Employee login details 
+
+  static const String emp_login="$empbaseUrl/login/";
+  static const String emp_profile_view="$empbaseUrl/view_employee_profile/";
+
  
   
   

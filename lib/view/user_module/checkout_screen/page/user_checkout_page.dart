@@ -64,7 +64,7 @@ Future<void> _bookproduct() async {
                       Navigator.pop(context);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => UserPaymet()),
+                        MaterialPageRoute(builder: (context) => UserPayment( total_price: responseMessage.advanceFee.toString())),
                       );
                     },
                     child: const Text("Yes"),

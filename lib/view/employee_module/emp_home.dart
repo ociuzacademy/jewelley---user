@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/employee_module/emp_booking_history.dart';
 import 'package:jewellery_app/view/employee_module/emp_home_screen.dart';
-import 'package:jewellery_app/view/employee_module/emp_profile.dart';
+import 'package:jewellery_app/view/employee_module/emp_profile/page/emp_profile.dart';
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class EmployeeHomePage extends StatefulWidget {
+  const EmployeeHomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _EmployeeHomePageState createState() => _EmployeeHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _EmployeeHomePageState extends State<EmployeeHomePage> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
@@ -34,9 +34,10 @@ class _HomePageState extends State<HomePage> {
           });
         },
         children: [
+          
           UserRequestPage(),
           const EmpBookingHistory(),
-          const EmpProfile(),
+          const UserProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

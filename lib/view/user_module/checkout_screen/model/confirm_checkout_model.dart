@@ -12,23 +12,27 @@ class ConfirmCheckoutModel {
     String? status;
     String? message;
     Data? data;
+    double? advanceFee;
 
     ConfirmCheckoutModel({
         this.status,
         this.message,
         this.data,
+        this.advanceFee,
     });
 
     factory ConfirmCheckoutModel.fromJson(Map<String, dynamic> json) => ConfirmCheckoutModel(
         status: json["status"],
         message: json["message"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        advanceFee: json["advance_fee"]?.toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": data?.toJson(),
+        "advance_fee": advanceFee,
     };
 }
 

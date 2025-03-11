@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
+import 'package:jewellery_app/view/user_module/checkout_screen/page/user_checkout_page.dart';
 import 'package:jewellery_app/view/user_module/view_cart/model/main_cart_model.dart';
 import 'package:jewellery_app/view/user_module/view_cart/service/cartitem_delete_service.dart';
 import 'package:jewellery_app/view/user_module/view_cart/service/main_cart_service.dart';
@@ -25,20 +26,19 @@ class _UserCartScreenState extends State<UserCartScreen> {
     });
   }
 
-  Future<void> _deleteItem(String cartItemId) async {
+  Future<void> _deleteItem(dynamic cartItemId) async {
     try {
       final responseMessage = await cartDeleteService(
-        
-        cart_item_id: cartItemId);
-
+        cart_item_id: cartItemId.toString(), 
+      );
+       
       if (responseMessage.status == 'success') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Product deleted successfully!')),
           );
 
-          // // Refresh the cart data after deletion
-          // setState(() {});
+          setState(() {}); // Refresh the cart
         }
       } else {
         if (mounted) {
@@ -131,7 +131,7 @@ class _UserCartScreenState extends State<UserCartScreen> {
                                       color:
                                           Color.fromARGB(255, 120, 118, 117)),
                                   onPressed: () =>
-                                      _deleteItem(item.id! as String),
+                                      _deleteItem(item.id), // Remove 'as String'
                                 ),
                               ],
                             ),
@@ -239,7 +239,13 @@ class _UserCartScreenState extends State<UserCartScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Handle checkout logic here
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CheckoutScreen(booking_id: ''),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

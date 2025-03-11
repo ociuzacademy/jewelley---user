@@ -2,38 +2,35 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/view_cart/model/cartitem_delete_model.dart';
+import 'package:jewellery_app/view/employee_module/emp_login/model/emp_login_model.dart';
 
-Future<CartDeleteModel> cartDeleteService({
-  required String cart_item_id,
-  
+Future<EmployeeLoginModel> empLoginService({
+  required String email,
+  required String password,
 }) async {
   try {
-   
     Map<String, dynamic> param = {
-     
-      "id":cart_item_id,
+      "email": email,
+      "password": password,
     };
-     
-   
-    final resp = await http.delete(
-      Uri.parse(UserUrl.cart_item_delete).replace(queryParameters: param),
-      //body: jsonEncode(param),
+
+    final resp = await http.post(
+      Uri.parse(UserUrl.emp_login), 
+      body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
       },
     );
-    
+
     if (resp.statusCode == 200) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = CartDeleteModel.fromJson(decoded);
-     
+      final response = EmployeeLoginModel.fromJson(decoded);
+          
       return response;
-     
     } else {
       final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
       throw Exception(
-        '${errorResponse['message'] ?? 'Unknown error'}',
+        'Failed to login: ${errorResponse['message'] ?? 'Unknown error'}',
       );
     }
   } on SocketException {

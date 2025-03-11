@@ -20,7 +20,7 @@ class ProductListModel {
     String? mainImage;
     List<String>? images;
     List<String>? sizes;
-    List<double>? weights;
+    List<String>? weights;
 
     ProductListModel({
         this.id,
@@ -49,7 +49,7 @@ class ProductListModel {
         mainImage: json["main_image"],
         images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
         sizes: json["sizes"] == null ? [] : List<String>.from(json["sizes"]!.map((x) => x)),
-        weights: json["weights"] == null ? [] : List<double>.from(json["weights"]!.map((x) => x?.toDouble())),
+        weights: json["weights"] == null ? [] : List<String>.from(json["weights"]!.map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
