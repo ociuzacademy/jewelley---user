@@ -2,27 +2,27 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/cart_model.dart';
+import 'package:jewellery_app/view/user_module/single_product_payment/model/card_maodel.dart';
 
-Future<CartItemModel> cartService({
-  required String product_id,
-  required String quantity,
-  required String weight,
-  required String size,
+Future<CardSingleModel> cardPayService({
+  required String name,
+  required String booking_id,
+  required String card_number,
+  required String expiry_date,
+  required String cvv,
 }) async {
   try {
     //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user_id": 18,
-      "product_id": product_id,
-      "quantity": quantity,
-      "size" : size,
-      "weight":weight,
-     
+      "booking": booking_id,
+      "card_holder_name": name,
+      "card_number": card_number,
+      "expiry_date": expiry_date,
+      "cvv": cvv,
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.cart_product),
+      Uri.parse(UserUrl.single_card),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -31,7 +31,7 @@ Future<CartItemModel> cartService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = CartItemModel.fromJson(decoded);
+      final response = CardSingleModel.fromJson(decoded);
 
       return response;
     } else {

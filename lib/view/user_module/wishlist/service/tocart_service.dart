@@ -4,25 +4,21 @@ import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/single_product/model/cart_model.dart';
 
-Future<CartItemModel> cartService({
+Future<CartItemModel> toCartService({
   required String product_id,
-  required String quantity,
-  required String weight,
-  required String size,
+  
 }) async {
   try {
     //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user_id": 18,
+      "user_id": 18.toString(),
       "product_id": product_id,
-      "quantity": quantity,
-      "size" : size,
-      "weight":weight,
+      
      
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.cart_product),
+      Uri.parse(UserUrl.wishlist_to_cart),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',

@@ -18,6 +18,13 @@ class UserUrl {
   static const String cart_product="$userbaseUrl/cart_products/";
   static const String view_cart="$userbaseUrl/view_cart/";
   static const String cart_item_delete="$userbaseUrl/remove_cart_items/";
+  static const String add_to_wishlist="$userbaseUrl/add_wishlist/";
+  static const String view_wishlist="$userbaseUrl/view_wishlist/";
+  static const String delete_wishlist="$userbaseUrl/remove_wishlist_items/";
+  static const String wishlist_to_cart="$userbaseUrl/wishlist_to_cart/";
+  static const String single_gpay="$userbaseUrl/upi_payment/";
+  static const String single_card="$userbaseUrl/card_payment/";
+
 
   // Employee login details 
 

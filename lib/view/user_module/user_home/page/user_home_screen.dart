@@ -93,7 +93,8 @@ class UserHomeScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: "Search Jewelry...",
                     hintStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
+                    prefixIcon:
+                        const Icon(Icons.search, color: Colors.deepPurple),
                     filled: true,
                     fillColor: Colors.deepPurple.shade50,
                     border: OutlineInputBorder(
@@ -114,105 +115,109 @@ class UserHomeScreen extends StatelessWidget {
                   color: Color.fromARGB(255, 78, 2, 91),
                 ),
               ),
-              const SizedBox(height: 10),         // using future builder
+              const SizedBox(height: 10), // using future builder
 
-             FutureBuilder<List<CategoryListModel>>(
-  future: categoryListService(),
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+              FutureBuilder<List<CategoryListModel>>(
+                future: categoryListService(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-    if (snapshot.hasError) {
-      return Center(
-        child: Column(
-          children: [
-            Image.asset('assets/images/noResponse.jpg'),
-            Text(
-              "Error: ${snapshot.error}",
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (!snapshot.hasData || snapshot.data!.isEmpty) {
-      return const Center(
-        child: Text("No service found"),
-      );
-    }
-
-    List<CategoryListModel> categories = snapshot.data!;
-
-    return SizedBox(
-      height: 120,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => JewelryPage(category_id :category.id ?? 0),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: ClipOval(
-                      child: Image.network(
-                        '${UserUrl.baseUrl}/${category.iconUrl!}',
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) => const Icon(
-                          Icons.error,
-                          size: 40,
-                          color: Colors.red,
-                        ),
-                        fit: BoxFit.cover,
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Image.asset('assets/images/noResponse.jpg'),
+                          Text(
+                            "Error: ${snapshot.error}",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    category.name!,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 78, 2, 91),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  },
-),
+                    );
+                  }
 
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text("No service found"),
+                    );
+                  }
+
+                  List<CategoryListModel> categories = snapshot.data!;
+
+                  return SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        final category = categories[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    JewelryPage(category_id: category.id ?? 0),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      '${UserUrl.baseUrl}/${category.iconUrl!}',
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                        Icons.error,
+                                        size: 40,
+                                        color: Colors.red,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  category.name!,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 78, 2, 91),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
 
               // Trending Items Section
               const Text(
@@ -273,8 +278,10 @@ class JewelryItem extends StatelessWidget {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(imageUrl, fit: BoxFit.cover, width: double.infinity),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(imageUrl,
+                  fit: BoxFit.cover, width: double.infinity),
             ),
           ),
           Padding(

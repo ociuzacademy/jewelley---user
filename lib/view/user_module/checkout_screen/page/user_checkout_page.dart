@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jewellery_app/view/user_module/checkout_screen/service/checkout_service.dart';
 import 'package:jewellery_app/view/user_module/checkout_screen/service/confirm_checkout_service.dart';
-import 'package:jewellery_app/view/user_paymet.dart';
+import 'package:jewellery_app/view/user_module/single_product_payment/page/user_paymet.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final String booking_id;
@@ -64,7 +64,8 @@ Future<void> _bookproduct() async {
                       Navigator.pop(context);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => UserPayment( total_price: responseMessage.advanceFee.toString())),
+                        MaterialPageRoute(builder: (context) => UserPayment( total_price: responseMessage.advanceFee.toString(),
+                        booking_id: responseMessage.bookingId.toString(),)),
                       );
                     },
                     child: const Text("Yes"),

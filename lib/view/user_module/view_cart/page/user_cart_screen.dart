@@ -4,6 +4,7 @@ import 'package:jewellery_app/view/user_module/checkout_screen/page/user_checkou
 import 'package:jewellery_app/view/user_module/view_cart/model/main_cart_model.dart';
 import 'package:jewellery_app/view/user_module/view_cart/service/cartitem_delete_service.dart';
 import 'package:jewellery_app/view/user_module/view_cart/service/main_cart_service.dart';
+import 'package:jewellery_app/view/user_module/wishlist/page/whislist_page.dart';
 
 class UserCartScreen extends StatefulWidget {
   const UserCartScreen({super.key});
@@ -38,7 +39,7 @@ class _UserCartScreenState extends State<UserCartScreen> {
             const SnackBar(content: Text('Product deleted successfully!')),
           );
 
-          setState(() {}); // Refresh the cart
+          //setState(() {}); // Refresh the cart
         }
       } else {
         if (mounted) {
@@ -59,11 +60,24 @@ class _UserCartScreenState extends State<UserCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Shopping Cart",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+      appBar:  AppBar(
+        title: const Text(
+          "Shopping Cart",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 78, 2, 91),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite_border, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const WishlistPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<MainCartModel>(
         future: mainCartService(),
