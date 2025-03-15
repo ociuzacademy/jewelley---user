@@ -2,26 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/add_wishlist_model.dart';
+import 'package:jewellery_app/view/user_module/single_product_payment/model/gpay_model.dart';
 
-Future<AddtoWishlistModel> wishlistService({
-  required String product_id,
-  required String size,
-  required String weight,
-  
-  
+Future<GpaySingleModel> gpayService({
+  required String upi_id,
+  required String booking_id,
 }) async {
   try {
     //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user": 18.toString(),
-      "product": product_id,
-      "size":size,
-      "weight":weight,
+      "upi_id": upi_id,
+      "booking": booking_id,
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.add_to_wishlist),
+      Uri.parse(UserUrl.single_gpay),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -30,7 +25,7 @@ Future<AddtoWishlistModel> wishlistService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = AddtoWishlistModel.fromJson(decoded);
+      final response = GpaySingleModel.fromJson(decoded);
 
       return response;
     } else {

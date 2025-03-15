@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
+import 'package:jewellery_app/view/user_module/cart_checkout/page/cart_checkout_page.dart';
 import 'package:jewellery_app/view/user_module/checkout_screen/page/user_checkout_page.dart';
 import 'package:jewellery_app/view/user_module/view_cart/model/main_cart_model.dart';
 import 'package:jewellery_app/view/user_module/view_cart/service/cartitem_delete_service.dart';
@@ -14,6 +15,7 @@ class UserCartScreen extends StatefulWidget {
 }
 
 class _UserCartScreenState extends State<UserCartScreen> {
+  
   double getTotalPrice(List<CartItem> cartItems) {
     return cartItems.fold(0, (sum, item) => sum + (item.itemTotalPrice ?? 0));
   }
@@ -39,7 +41,7 @@ class _UserCartScreenState extends State<UserCartScreen> {
             const SnackBar(content: Text('Product deleted successfully!')),
           );
 
-          //setState(() {}); // Refresh the cart
+          setState(() {}); 
         }
       } else {
         if (mounted) {
@@ -257,7 +259,7 @@ class _UserCartScreenState extends State<UserCartScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const CheckoutScreen(booking_id: ''),
+                                    const CheckoutScreenMain(),
                               ),
                             );
                           },

@@ -27,7 +27,7 @@ class _WishlistPageState extends State<WishlistPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Product deleted successfully!')),
           );
-
+          setState(() {});
          
         }
       } else {
@@ -95,7 +95,7 @@ class _WishlistPageState extends State<WishlistPage> {
               ),
             );
           },
-        );
+        );setState(() {});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(responseMessage.message ?? "Unknown error")),

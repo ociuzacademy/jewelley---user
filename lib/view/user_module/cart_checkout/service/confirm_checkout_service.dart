@@ -2,26 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/add_wishlist_model.dart';
+import 'package:jewellery_app/view/user_module/checkout_screen/model/confirm_checkout_model.dart';
 
-Future<AddtoWishlistModel> wishlistService({
-  required String product_id,
-  required String size,
-  required String weight,
-  
-  
+Future<ConfirmCheckoutModel> confirmCheckoutScreenService({
+  required String visit_date,
+  required String visit_time,
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
+   
     Map<String, dynamic> param = {
       "user": 18.toString(),
-      "product": product_id,
-      "size":size,
-      "weight":weight,
+      "visit_date": visit_date, 
+      "visit_time": visit_time, 
+    
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.add_to_wishlist),
+      Uri.parse(UserUrl.cart_checkout_details),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -30,8 +27,7 @@ Future<AddtoWishlistModel> wishlistService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = AddtoWishlistModel.fromJson(decoded);
-
+      final response = ConfirmCheckoutModel.fromJson(decoded);
       return response;
     } else {
       final Map<String, dynamic> errorResponse = jsonDecode(resp.body);

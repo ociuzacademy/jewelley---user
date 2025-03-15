@@ -3,6 +3,7 @@ import 'package:jewellery_app/view/booking_history.dart';
 import 'package:jewellery_app/view/user_module/view_cart/page/user_cart_screen.dart';
 import 'package:jewellery_app/view/user_module/user_home/page/user_home_screen.dart';
 import 'package:jewellery_app/view/user_module/user_profile/page/user_profile_screen.dart';
+import 'package:jewellery_app/view/user_module/wishlist/page/whislist_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -36,16 +37,18 @@ class _HomePageState extends State<HomePage> {
         },
         children: const [
           UserHomeScreen(),
-          BookingHistoryScreen(),
           UserCartScreen(),
+          WishlistPage(),
+          BookingHistoryScreen(),
           UserProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Wishlist"),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: _selectedIndex,

@@ -2,26 +2,27 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product/model/add_wishlist_model.dart';
+import 'package:jewellery_app/view/user_module/cart_product_payment/model/cart_card_model.dart';
 
-Future<AddtoWishlistModel> wishlistService({
-  required String product_id,
-  required String size,
-  required String weight,
-  
-  
+
+Future<CarCardtPayment> cartCardPayService({
+  required String name,
+  required String card_number,
+  required String expiry_date,
+  required String cvv,
 }) async {
   try {
     //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user": 18.toString(),
-      "product": product_id,
-      "size":size,
-      "weight":weight,
+      "user_id": 18.toString(),
+      "card_holder_name": name,
+      "card_number": card_number,
+      "expiry_date": expiry_date,
+      "cvv": cvv,
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.add_to_wishlist),
+      Uri.parse(UserUrl.cart_card_payment),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -30,7 +31,7 @@ Future<AddtoWishlistModel> wishlistService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = AddtoWishlistModel.fromJson(decoded);
+      final response = CarCardtPayment.fromJson(decoded);
 
       return response;
     } else {

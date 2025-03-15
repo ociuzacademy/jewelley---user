@@ -24,6 +24,10 @@ class UserUrl {
   static const String wishlist_to_cart="$userbaseUrl/wishlist_to_cart/";
   static const String single_gpay="$userbaseUrl/upi_payment/";
   static const String single_card="$userbaseUrl/card_payment/";
+  static const String cart_checkout="$userbaseUrl/cart_booking_summary/";
+  static const String cart_checkout_details="$userbaseUrl/cart_checkout/";
+  static const String cart_card_payment="$userbaseUrl/cart_card_payment/";
+
 
 
   // Employee login details 

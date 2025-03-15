@@ -38,6 +38,7 @@ class CartItem {
     int? quantity;
     String? size;
     String? weight;
+    double? singleItemPrice;
     double? itemTotalPrice;
     int? stock;
     String? productImage;
@@ -48,6 +49,7 @@ class CartItem {
         this.quantity,
         this.size,
         this.weight,
+        this.singleItemPrice,
         this.itemTotalPrice,
         this.stock,
         this.productImage,
@@ -59,6 +61,7 @@ class CartItem {
         quantity: json["quantity"],
         size: json["size"],
         weight: json["weight"],
+        singleItemPrice: json["single_item_price"]?.toDouble(),
         itemTotalPrice: json["item_total_price"]?.toDouble(),
         stock: json["stock"],
         productImage: json["product_image"],
@@ -70,6 +73,7 @@ class CartItem {
         "quantity": quantity,
         "size": size,
         "weight": weight,
+        "single_item_price": singleItemPrice,
         "item_total_price": itemTotalPrice,
         "stock": stock,
         "product_image": productImage,
