@@ -114,7 +114,7 @@ class _WishlistPageState extends State<WishlistPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Wishlist"),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color.fromARGB(255, 101, 28, 111),
         centerTitle: true,
       ),
       body: FutureBuilder<List<ViewWishlistModel>>(
@@ -226,7 +226,7 @@ class _WishlistPageState extends State<WishlistPage> {
                         child: Text(
                           "₹${item.productPrice ?? "0"}",
                           style: const TextStyle(
-                              fontSize: 14, color: Colors.deepPurple),
+                              fontSize: 14, color: Colors.deepPurple,),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -234,7 +234,7 @@ class _WishlistPageState extends State<WishlistPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
+                            backgroundColor: const Color.fromARGB(255, 108, 33, 109),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
