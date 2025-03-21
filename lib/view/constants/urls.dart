@@ -28,6 +28,7 @@ class UserUrl {
   static const String cart_checkout_details="$userbaseUrl/cart_checkout/";
   static const String cart_card_payment="$userbaseUrl/cart_card_payment/";
   static const String history="$userbaseUrl/booking_history/";
+  
 
 
 
@@ -36,6 +37,9 @@ class UserUrl {
   static const String emp_login="$empbaseUrl/login/";
   static const String emp_profile_view="$empbaseUrl/view_employee_profile/";
   static const String request_view="$empbaseUrl/assigned_bookings/";
+  static const String userMeet="$empbaseUrl/update_user_booking_status/";
+  static const String emphistory="$empbaseUrl/employee_booking_history/";
+
 
  
   

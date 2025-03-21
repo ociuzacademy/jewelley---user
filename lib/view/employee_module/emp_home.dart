@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/employee_module/emp_booking_history.dart';
-import 'package:jewellery_app/view/employee_module/emp_home_screen.dart';
+import 'package:jewellery_app/view/employee_module/history/page/emp_booking_history.dart';
+import 'package:jewellery_app/view/employee_module/requset_page/page/emp_home_screen.dart';
 import 'package:jewellery_app/view/employee_module/emp_profile/page/emp_profile.dart';
 
 
