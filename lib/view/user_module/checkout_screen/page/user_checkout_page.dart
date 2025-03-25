@@ -21,90 +21,131 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
 
-  // final double totalAmount = 850.0;
-  // final double advanceFee = 0.2 * 850; // 20% of total amount
-
-
-
-Future<void> _bookproduct() async {
-  if (_formKey.currentState?.validate() == true) {
-    try {
-      // Convert timeController.text into HH:mm:ss format
-      String formattedTime;
+  Future<void> _bookproduct() async {
+    if (_formKey.currentState?.validate() == true) {
       try {
-        DateTime parsedTime = DateFormat.jm().parse(timeController.text); // Parses '3:01 PM' to DateTime
-        formattedTime = DateFormat.Hms().format(parsedTime); // Converts to '15:01:02'
-      } catch (e) {
-        formattedTime = "00:00:00"; // Default fallback if parsing fails
-      }
-
-      final responseMessage = await confirmCheckoutService(
-        booking_id: widget.booking_id,
-        visit_date: dateController.text,
-        visit_time: formattedTime,
-      );
-
-      if (responseMessage.status == 'success') {
-        if (mounted) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Proceed to Payment"),
-                content: const Text("Do you want to continue to the payment page/n If there is a any cancelation please contact to the shop?"),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("No"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserPayment( total_price: responseMessage.advanceFee.toString(),
-                        booking_id: responseMessage.bookingId.toString(),)),
-                      );
-                    },
-                    child: const Text("Yes"),
-                  ),
-                ],
-              );
-            },
-          );
+        String formattedTime;
+        try {
+          DateTime parsedTime = DateFormat.jm().parse(timeController.text);
+          formattedTime = DateFormat.Hms().format(parsedTime);
+        } catch (e) {
+          formattedTime = "00:00:00";
         }
-      } else {
+
+        final responseMessage = await confirmCheckoutService(
+          booking_id: widget.booking_id,
+          visit_date: dateController.text,
+          visit_time: formattedTime,
+        );
+
+        if (responseMessage.status == 'success') {
+          if (mounted) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                    "Proceed to Payment",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                  ),
+                  content: Text(
+                    "Do you want to continue to the payment page/n If there is a any cancelation please contact to the shop?",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.04,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPayment(
+                              total_price: responseMessage.advanceFee.toString(),
+                              booking_id: responseMessage.bookingId.toString(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.04,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  responseMessage.message ?? "Unknown error",
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                  ),
+                ),
+              ),
+            );
+          }
+        }
+      } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseMessage.message ?? "Unknown error")),
+            SnackBar(
+              content: Text(
+                'Product purchase failed: $e',
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.04,
+                ),
+              ),
+            ),
           );
         }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Product purchase failed: $e')),
-        );
       }
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final bool isPortrait = screenSize.height > screenSize.width;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Checkout",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: Text(
+          "Checkout",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: screenSize.width * 0.05,
+          ),
+        ),
         backgroundColor: Colors.purple.shade900,
       ),
       body: FutureBuilder(
         future: checkoutService(booking_id: widget.booking_id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -112,12 +153,19 @@ Future<void> _bookproduct() async {
           if (snapshot.hasError) {
             return Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/noResponse.jpg'),
+                  Image.asset(
+                    'assets/images/noResponse.jpg',
+                    width: screenSize.width * 0.6,
+                  ),
+                  SizedBox(height: screenSize.height * 0.02),
                   Text(
                     "Error: ${snapshot.error}",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: screenSize.width * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -125,13 +173,20 @@ Future<void> _bookproduct() async {
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: Text("No service found"));
+            return Center(
+              child: Text(
+                "No service found",
+                style: TextStyle(
+                  fontSize: screenSize.width * 0.045,
+                ),
+              ),
+            );
           }
 
           final singleitem = snapshot.data;
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(screenSize.width * 0.04),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -142,95 +197,83 @@ Future<void> _bookproduct() async {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(screenSize.width * 0.05),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "User Details",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: screenSize.width * 0.05,
                             fontWeight: FontWeight.bold,
                             color: Colors.purple,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Text(
-                              "Name: ",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              singleitem!.userName!,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
+                        SizedBox(height: screenSize.height * 0.01),
+                        _buildDetailRow(
+                          context,
+                          "Name: ",
+                          singleitem!.userName!,
                         ),
-                        Row(
-                          children: [
-                            const Text(
-                              "Email: ",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              singleitem.userEmail!,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
+                        _buildDetailRow(
+                          context,
+                          "Email: ",
+                          singleitem.userEmail!,
                         ),
-                        Row(
-                          children: [
-                            const Text(
-                              "Phone: ",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              singleitem
-                                  .userPhoneNumber!, // Assuming `phone` is a property of `singleitem`
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
+                        _buildDetailRow(
+                          context,
+                          "Phone: ",
+                          singleitem.userPhoneNumber!,
                         ),
                       ],
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: screenSize.height * 0.02),
 
                 // Order Summary
                 Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(screenSize.width * 0.04),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Order Summary",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple)),
-                        const SizedBox(height: 10),
-                        summaryRow("Total Amount",
-                            "\u{20B9}${singleitem.totalPrice!}"),
-                        summaryRow("Advance Fee (10%)",
-                            "\u{20B9}${singleitem.advanceFee!}"),
-                        const Divider(),
-                        summaryRow("Total Advance Fee for Booking",
-                            "\u{20B9}${singleitem.advanceFee!}",
-                            isBold: true),
+                        Text(
+                          "Order Summary",
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.05,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.purple,
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.01),
+                        _buildSummaryRow(
+                          context,
+                          "Total Amount",
+                          "\u{20B9}${singleitem.totalPrice!}",
+                        ),
+                        _buildSummaryRow(
+                          context,
+                          "Advance Fee (10%)",
+                          "\u{20B9}${singleitem.advanceFee!}",
+                        ),
+                        Divider(),
+                        _buildSummaryRow(
+                          context,
+                          "Total Advance Fee for Booking",
+                          "\u{20B9}${singleitem.advanceFee!}",
+                          isBold: true,
+                        ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenSize.height * 0.02),
 
                 // Booking Form
                 Form(
@@ -238,39 +281,42 @@ Future<void> _bookproduct() async {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildDateTimeField(
-                          controller: dateController,
-                          label: "Select Date",
-                          icon: Icons.calendar_today,
-                          isDate: true),
-                      const SizedBox(height: 16),
-                      buildDateTimeField(
-                          controller: timeController,
-                          label: "Select Time",
-                          icon: Icons.access_time,
-                          isDate: false),
-                      const SizedBox(height: 24),
+                      _buildDateTimeField(
+                        context,
+                        controller: dateController,
+                        label: "Select Date",
+                        icon: Icons.calendar_today,
+                        isDate: true,
+                      ),
+                      SizedBox(height: screenSize.height * 0.02),
+                      _buildDateTimeField(
+                        context,
+                        controller: timeController,
+                        label: "Select Time",
+                        icon: Icons.access_time,
+                        isDate: false,
+                      ),
+                      SizedBox(height: screenSize.height * 0.03),
                       Center(
                         child: ElevatedButton(
                           onPressed: _bookproduct,
-                          // {
-                          //   if (_formKey.currentState!.validate()) {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => UserPaymet()));
-                          //   }
-                          // },
                           style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 14),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenSize.width * 0.1,
+                              vertical: screenSize.height * 0.02,
+                            ),
                             backgroundColor: Colors.purple.shade900,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
-                          child: const Text("Confirm Booking",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white)),
+                          child: Text(
+                            "Confirm Booking",
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.04,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -284,37 +330,84 @@ Future<void> _bookproduct() async {
     );
   }
 
-  Widget summaryRow(String title, String value, {bool isBold = false}) {
+  Widget _buildDetailRow(BuildContext context, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.005),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
-          Text(value,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * 0.04,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * 0.04,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget buildDateTimeField(
-      {required TextEditingController controller,
-      required String label,
-      required IconData icon,
-      required bool isDate}) {
+  Widget _buildSummaryRow(BuildContext context, String title, String value, {bool isBold = false}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.005),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * 0.04,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * 0.04,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDateTimeField(
+    BuildContext context, {
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required bool isDate,
+  }) {
     return TextFormField(
       controller: controller,
       readOnly: true,
       decoration: InputDecoration(
         labelText: label,
-        suffixIcon: Icon(icon, color: Colors.purple.shade900),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        labelStyle: TextStyle(
+          fontSize: MediaQuery.of(context).size.width * 0.04,
+        ),
+        suffixIcon: Icon(
+          icon,
+          color: Colors.purple.shade900,
+          size: MediaQuery.of(context).size.width * 0.06,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.04,
+          vertical: MediaQuery.of(context).size.height * 0.02,
+        ),
+      ),
+      style: TextStyle(
+        fontSize: MediaQuery.of(context).size.width * 0.04,
       ),
       onTap: () async {
         if (isDate) {

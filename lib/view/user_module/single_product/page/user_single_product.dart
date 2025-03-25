@@ -25,21 +25,19 @@ class _JewelryProductPageState extends State<JewelryProductPage>
   String? selectedWeight;
   int quantity = 1;
   final TextEditingController _quantityController = TextEditingController();
-  Future<dynamic>? _future; // Declare _future as nullable
-  bool isWishlisted = false; // Track wishlist state
+  Future<dynamic>? _future;
+  bool isWishlisted = false;
 
   @override
-  bool get wantKeepAlive => true; // Preserve state when navigating back
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
     _quantityController.text = quantity.toString();
-    _future = singleProductService(
-        product_id: widget.productId); // Initialize _future
+    _future = singleProductService(product_id: widget.productId);
   }
 
-  // Validation function for size and weight
   bool _validateSelection() {
     if (selectedSize == null || selectedWeight == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +60,6 @@ class _JewelryProductPageState extends State<JewelryProductPage>
     _buyProduct();
   }
 
-  // Future for post method to buy product
   Future<void> _buyProduct() async {
     try {
       final responseMessage = await buyProductService(
@@ -96,10 +93,9 @@ class _JewelryProductPageState extends State<JewelryProductPage>
     }
   }
 
-  // Future for post method to add to cart
   Future<void> _addToCart() async {
     if (!_validateSelection()) {
-      return; // Stop if validation fails
+      return;
     }
 
     try {
@@ -113,14 +109,14 @@ class _JewelryProductPageState extends State<JewelryProductPage>
       if (responseMessage.status == 'success') {
         showModalBottomSheet(
           context: context,
-          isScrollControlled: true, // Allows it to take full width
-          shape: RoundedRectangleBorder(
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
           builder: (context) {
             return Container(
-              width: MediaQuery.of(context).size.width, // Make it full width
-              padding: const EdgeInsets.all(16.0),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,8 +124,12 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                 children: [
                   Text(
                     'Product added to cart',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -139,11 +139,12 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                         ),
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       'View Cart',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 93, 7, 87),
+                        color: const Color.fromARGB(255, 93, 7, 87),
                         fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.width * 0.04,
                       ),
                     ),
                   ),
@@ -164,10 +165,9 @@ class _JewelryProductPageState extends State<JewelryProductPage>
     }
   }
 
-  // Future for post method to add to wishlist
   Future<void> _addToWishlist() async {
     if (!_validateSelection()) {
-      return; // Stop if validation fails
+      return;
     }
 
     try {
@@ -179,18 +179,18 @@ class _JewelryProductPageState extends State<JewelryProductPage>
 
       if (responseMessage.message == 'Product successfully added to wishlist') {
         setState(() {
-          isWishlisted = true; // Update wishlist state
+          isWishlisted = true;
         });
         showModalBottomSheet(
           context: context,
-          isScrollControlled: true, // Allows it to take full width
-          shape: RoundedRectangleBorder(
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
           builder: (context) {
             return Container(
-              width: MediaQuery.of(context).size.width, // Make it full width
-              padding: const EdgeInsets.all(16.0),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -198,8 +198,12 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                 children: [
                   Text(
                     'Product added to Wishlist',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -209,11 +213,12 @@ class _JewelryProductPageState extends State<JewelryProductPage>
                         ),
                       );
                     },
-                    child: const Text(
-                      'View Cart',
+                    child: Text(
+                      'View Wishlist',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 93, 7, 87),
+                        color: const Color.fromARGB(255, 93, 7, 87),
                         fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.width * 0.04,
                       ),
                     ),
                   ),
@@ -236,17 +241,25 @@ class _JewelryProductPageState extends State<JewelryProductPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // Ensure the mixin is used
+    super.build(context);
+    final Size screenSize = MediaQuery.of(context).size;
+    final bool isPortrait = screenSize.height > screenSize.width;
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Jewellery Details",
-            style: TextStyle(color: Colors.white)),
+        title: Text(
+          "Jewellery Details",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: screenSize.width * 0.05,
+          ),
+        ),
         backgroundColor: Colors.deepPurple,
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
       body: FutureBuilder(
-        future: _future, // Use _future here
+        future: _future,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -255,189 +268,324 @@ class _JewelryProductPageState extends State<JewelryProductPage>
           if (snapshot.hasError) {
             return Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/noResponse.jpg'),
-                  Text("Error: ${snapshot.error}",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold)),
+                  Image.asset(
+                    'assets/images/noResponse.jpg',
+                    width: screenSize.width * 0.6,
+                  ),
+                  SizedBox(height: screenSize.height * 0.02),
+                  Text(
+                    "Error: ${snapshot.error}",
+                    style: TextStyle(
+                      fontSize: screenSize.width * 0.045,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
                 ],
               ),
             );
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: Text("No service found"));
+            return Center(
+              child: Text(
+                "No service found",
+                style: TextStyle(fontSize: screenSize.width * 0.045),
+              ),
+            );
           }
 
           final singleitem = snapshot.data;
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(screenSize.width * 0.04),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 300,
+                  height: isPortrait ? screenSize.height * 0.35 : screenSize.height * 0.5,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: singleitem!.images!.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.02
+                        ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Image.network(
-                              '${UserUrl.baseUrl}/${singleitem.images![index]}',
-                              height: 300,
-                              fit: BoxFit.cover),
+                            '${UserUrl.baseUrl}/${singleitem.images![index]}',
+                            width: isPortrait ? screenSize.width * 0.8 : screenSize.width * 0.4,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenSize.height * 0.02),
                 Text(
                   singleitem.name!,
-                  style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple),
-                ),
-                const SizedBox(height: 10),
-                Text(singleitem.description!,
-                    style:
-                        const TextStyle(fontSize: 16, color: Colors.black87)),
-                const SizedBox(height: 20),
-                IconButton(
-                  icon: Icon(
-                    isWishlisted ? Icons.favorite : Icons.favorite_border,
-                    color: isWishlisted ? Colors.red : Colors.grey,
-                    size: 30,
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
                   ),
-                  onPressed: _addToWishlist, // Call function
                 ),
-                const Text("Select Size",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                SizedBox(height: screenSize.height * 0.01),
+                Text(
+                  singleitem.description!,
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.04,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.02),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    icon: Icon(
+                      isWishlisted ? Icons.favorite : Icons.favorite_border,
+                      color: isWishlisted ? Colors.red : Colors.grey,
+                      size: screenSize.width * 0.08,
+                    ),
+                    onPressed: _addToWishlist,
+                  ),
+                ),
+                Text(
+                  "Select Size",
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.01),
                 Wrap(
+                  spacing: screenSize.width * 0.02,
+                  runSpacing: screenSize.height * 0.01,
                   children: singleitem.sizes!.map<Widget>((size) {
                     return GestureDetector(
                       onTap: () => setState(() => selectedSize = size),
                       child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 5),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.04,
+                          vertical: screenSize.height * 0.01,
+                        ),
                         decoration: BoxDecoration(
                           color: selectedSize == size
                               ? Colors.deepPurple
                               : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(size,
-                            style: TextStyle(
-                                color: selectedSize == size
-                                    ? Colors.white
-                                    : Colors.black)),
+                        child: Text(
+                          size,
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.04,
+                            color: selectedSize == size
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
                       ),
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 20),
-                const Text("Select Weight",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                SizedBox(height: screenSize.height * 0.03),
+                Text(
+                  "Select Weight",
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.01),
                 Wrap(
+                  spacing: screenSize.width * 0.02,
+                  runSpacing: screenSize.height * 0.01,
                   children: singleitem.weights!.map<Widget>((weight) {
                     return GestureDetector(
                       onTap: () =>
                           setState(() => selectedWeight = weight.toString()),
                       child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 5),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.04,
+                          vertical: screenSize.height * 0.01,
+                        ),
                         decoration: BoxDecoration(
                           color: selectedWeight == weight.toString()
                               ? Colors.deepPurple
                               : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(weight.toString(),
-                            style: TextStyle(
-                                color: selectedWeight == weight.toString()
-                                    ? Colors.white
-                                    : Colors.black)),
+                        child: Text(
+                          weight.toString(),
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.04,
+                            color: selectedWeight == weight.toString()
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
                       ),
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: screenSize.height * 0.04),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Select Quantity",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text(
+                      "Select Quantity",
+                      style: TextStyle(
+                        fontSize: screenSize.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: screenSize.height * 0.01),
                     if (singleitem.stock! > 0)
                       Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.remove),
+                            icon: Icon(
+                              Icons.remove,
+                              size: screenSize.width * 0.06,
+                            ),
                             onPressed: quantity > 1
                                 ? () => setState(() => quantity--)
                                 : null,
                           ),
-                          Text(quantity.toString(),
-                              style: const TextStyle(fontSize: 18)),
+                          Text(
+                            quantity.toString(),
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.05,
+                            ),
+                          ),
                           IconButton(
-                            icon: const Icon(Icons.add),
+                            icon: Icon(
+                              Icons.add,
+                              size: screenSize.width * 0.06,
+                            ),
                             onPressed: quantity < singleitem.stock!
                                 ? () => setState(() => quantity++)
                                 : null,
                           ),
-                          Text(" / ${singleitem.stock!} available"),
+                          Text(
+                            " / ${singleitem.stock!} available",
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.04,
+                            ),
+                          ),
                         ],
                       )
                     else
-                      const Text("Out of Stock",
-                          style: TextStyle(fontSize: 18, color: Colors.red)),
-                    const SizedBox(height: 20),
+                      Text(
+                        "Out of Stock",
+                        style: TextStyle(
+                          fontSize: screenSize.width * 0.05,
+                          color: Colors.red,
+                        ),
+                      ),
+                    SizedBox(height: screenSize.height * 0.03),
                     Text(
                       "Total Price: \u{20B9}${(double.parse(singleitem.price!) * quantity).toStringAsFixed(2)}",
-                      style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple),
+                      style: TextStyle(
+                        fontSize: screenSize.width * 0.06,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
                     ),
-                    const SizedBox(height: 30),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: singleitem.stock! > 0
-                              ? () => validateAndBook(singleitem.stock!)
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange),
-                          child: const Text("Book Now",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
-                        ),
-                        const SizedBox(width: 50),
-                        ElevatedButton(
-                          onPressed: _addToCart,
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green),
-                          child: const Text("Add to Cart",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
-                        ),
-                      ],
-                    ),
+                    SizedBox(height: screenSize.height * 0.04),
+                    isPortrait
+                        ? Column(
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: singleitem.stock! > 0
+                                      ? () => validateAndBook(singleitem.stock!)
+                                      : null,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.orange,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: screenSize.height * 0.02,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Book Now",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: screenSize.width * 0.045,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: screenSize.height * 0.02),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: _addToCart,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: screenSize.height * 0.02,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Add to Cart",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: screenSize.width * 0.045,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: singleitem.stock! > 0
+                                    ? () => validateAndBook(singleitem.stock!)
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: screenSize.width * 0.05,
+                                    vertical: screenSize.height * 0.02,
+                                  ),
+                                ),
+                                child: Text(
+                                  "Book Now",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenSize.width * 0.04,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: _addToCart,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: screenSize.width * 0.05,
+                                    vertical: screenSize.height * 0.02,
+                                  ),
+                                ),
+                                child: Text(
+                                  "Add to Cart",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenSize.width * 0.04,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                   ],
                 ),
               ],

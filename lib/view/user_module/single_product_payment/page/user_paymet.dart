@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/user_home.dart';
 import 'package:jewellery_app/view/user_module/single_product_payment/service/card_service.dart';
 import 'package:jewellery_app/view/user_module/single_product_payment/service/gpay_service.dart';
 
@@ -125,10 +126,16 @@ class UserPaymentState extends State<UserPayment> {
           cvv: cvvController.text.trim(),
           expiry_date: expiryDateController.text.trim(),
         );
-
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(responseMessage.message ?? 'Unknown error')),
+          SnackBar(content: Text('UPI Payment Successful')),
         );
+        if (responseMessage.message == 'success') {
+          // Fixed comparison
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()), // Push widget
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Card Payment failed: $e')),
@@ -145,12 +152,23 @@ class UserPaymentState extends State<UserPayment> {
           booking_id: widget.booking_id,
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(responseMessage.status == 'success'
-                  ? 'UPI Payment Successful'
-                  : 'Unknown error')),
-        );
+        if (responseMessage.status == 'success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('UPI Payment Successful')),
+          );
+          if (responseMessage.status == 'success') {
+            // Fixed comparison
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage()), // Push widget
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Unknown error occurred')),
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('UPI Payment failed: $e')),
