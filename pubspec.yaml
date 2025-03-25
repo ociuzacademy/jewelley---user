@@ -46,6 +46,8 @@ dependencies:
   cached_network_image: ^3.4.1
   intl: ^0.20.2
   shared_preferences: ^2.5.2
+  carousel_slider: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
   
   
 dev_dependencies:
@@ -62,6 +64,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/irenne.jpg"
+  adaptive_icon_background: "#ffffff" # Only for Android
+
 
 # The following section is specific to Flutter packages.
 flutter:

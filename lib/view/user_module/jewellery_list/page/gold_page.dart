@@ -4,7 +4,6 @@ import 'package:jewellery_app/view/user_module/jewellery_list/model/gold_jewel_m
 import 'package:jewellery_app/view/user_module/jewellery_list/service/gold_jewel_service.dart';
 import 'package:jewellery_app/view/user_module/single_product/page/user_single_product.dart';
 
-
 class JewelryPage extends StatefulWidget {
   final int category_id;
 
@@ -15,14 +14,14 @@ class JewelryPage extends StatefulWidget {
 }
 
 class _JewelryPageState extends State<JewelryPage> {
-
-  
   String selectedCategory = "All";
-
   final List<String> categories = ["All", "Bangles", "Necklaces", "Rings", "Chains"];
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isLandscape = size.width > size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Jewellery", style: TextStyle(color: Colors.deepPurple)),
@@ -31,19 +30,19 @@ class _JewelryPageState extends State<JewelryPage> {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(size.width * 0.04),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Horizontal List for Categories
             SizedBox(
-              height: 50,
+              height: size.height * 0.06,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
                     child: ChoiceChip(
                       label: Text(categories[index], style: const TextStyle(color: Colors.deepPurple)),
                       selected: selectedCategory == categories[index],
@@ -59,7 +58,7 @@ class _JewelryPageState extends State<JewelryPage> {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: size.height * 0.02),
 
             // Fetching Data using FutureBuilder
             Expanded(
@@ -84,11 +83,11 @@ class _JewelryPageState extends State<JewelryPage> {
                   }).toList();
 
                   return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.75,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isLandscape ? 3 : 2,
+                      crossAxisSpacing: size.width * 0.03,
+                      mainAxisSpacing: size.width * 0.03,
+                      childAspectRatio: size.width / (size.height * 0.8),
                     ),
                     itemCount: filteredItems.length,
                     itemBuilder: (context, index) {
@@ -115,13 +114,13 @@ class JewelryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        // Navigate to the detail page when tapped
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => JewelryProductPage(productId:product.id!.toString()),//
+            builder: (context) => JewelryProductPage(productId: product.id!.toString()),
           ),
         );
       },
@@ -136,16 +135,20 @@ class JewelryItem extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network('${UserUrl.baseUrl}/${product.mainImage!}', fit: BoxFit.cover, width: double.infinity),
+                child: Image.network(
+                  '${UserUrl.baseUrl}/${product.mainImage!}',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(size.width * 0.02),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(product.name!, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-                  const SizedBox(height: 5),
+                  SizedBox(height: size.height * 0.005),
                   Text("\$${product.price!}", style: const TextStyle(color: Colors.black54)),
                 ],
               ),
