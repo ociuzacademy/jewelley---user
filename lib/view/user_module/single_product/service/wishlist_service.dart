@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/single_product/model/add_wishlist_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<AddtoWishlistModel> wishlistService({
   required String product_id,
@@ -12,9 +13,9 @@ Future<AddtoWishlistModel> wishlistService({
   
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
+    String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user": 18.toString(),
+      "user": userId,
       "product": product_id,
       "size":size,
       "weight":weight,

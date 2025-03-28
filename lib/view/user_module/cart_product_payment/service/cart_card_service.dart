@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/cart_product_payment/model/cart_card_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 
 Future<CarCardtPayment> cartCardPayService({
@@ -12,9 +13,9 @@ Future<CarCardtPayment> cartCardPayService({
   required String cvv,
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
+    String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user_id": 18.toString(),
+      "user_id": userId,
       "card_holder_name": name,
       "card_number": card_number,
       "expiry_date": expiry_date,

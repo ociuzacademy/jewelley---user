@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/constants/urls.dart';
+import 'package:jewellery_app/view/employee_module/emp_login/page/emp_login.dart';
 import 'package:jewellery_app/view/employee_module/emp_profile/service/emp_profile_service.dart';
 import 'package:jewellery_app/view/employee_module/emp_profile/model/emp_profile_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
@@ -36,11 +38,13 @@ class UserProfileScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/noResponse.jpg', height: screenHeight * 0.3),
+                  Image.asset('assets/images/noResponse.jpg',
+                      height: screenHeight * 0.3),
                   const SizedBox(height: 10),
                   Text(
                     "Error: ${snapshot.error}",
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -61,21 +65,29 @@ class UserProfileScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: screenWidth * 0.15,
-                  backgroundImage: empProfile.photo != null && empProfile.photo!.isNotEmpty
-                      ? NetworkImage('${UserUrl.empbaseUrl}/${empProfile.photo!}')
-                      : const AssetImage('assets/images/default_user.png') as ImageProvider,
+                  backgroundImage:
+                      empProfile.photo != null && empProfile.photo!.isNotEmpty
+                          ? NetworkImage(
+                              '${UserUrl.empbaseUrl}/${empProfile.photo!}')
+                          : const AssetImage('assets/images/default_user.png')
+                              as ImageProvider,
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Text(
                   empProfile.name ?? "No Name",
-                  style: TextStyle(fontSize: screenWidth * 0.06, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.06,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: screenHeight * 0.02),
 
                 // Email, Phone, Address, etc.
-                _infoCard(Icons.email, "Email", empProfile.email ?? "No Email", screenWidth),
-                _infoCard(Icons.phone, "Phone", empProfile.phone ?? "No Phone Number", screenWidth),
-                _infoCard(Icons.location_on, "Address", empProfile.address ?? "No Address", screenWidth),
+                _infoCard(Icons.email, "Email", empProfile.email ?? "No Email",
+                    screenWidth),
+                _infoCard(Icons.phone, "Phone",
+                    empProfile.phone ?? "No Phone Number", screenWidth),
+                _infoCard(Icons.location_on, "Address",
+                    empProfile.address ?? "No Address", screenWidth),
                 _infoCard(
                   Icons.calendar_today,
                   "Date Joined",
@@ -84,8 +96,9 @@ class UserProfileScreen extends StatelessWidget {
                       : "No Date of Joining",
                   screenWidth,
                 ),
-                _infoCard(Icons.work, "Position", empProfile.position ?? "No Position added", screenWidth),
-                
+                _infoCard(Icons.work, "Position",
+                    empProfile.position ?? "No Position added", screenWidth),
+
                 SizedBox(height: screenHeight * 0.03),
                 SizedBox(
                   width: screenWidth * 0.6,
@@ -96,16 +109,22 @@ class UserProfileScreen extends StatelessWidget {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text("Logout"),
-                            content: const Text("Are you sure you want to log out?"),
+                            content:
+                                const Text("Are you sure you want to log out?"),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(),
                                 child: const Text("Cancel"),
                               ),
                               TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.pop(context);
+                                onPressed: () async {
+                                  await PreferenceValues.employeeLogout();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const EmployeeLoginPage()),
+                                  );
                                 },
                                 child: const Text("Logout"),
                               ),
@@ -116,7 +135,8 @@ class UserProfileScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 148, 94, 159),
-                      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                      padding:
+                          EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(screenWidth * 0.02),
                       ),
@@ -139,7 +159,8 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoCard(IconData icon, String label, String value, double screenWidth) {
+  Widget _infoCard(
+      IconData icon, String label, String value, double screenWidth) {
     return Card(
       child: ListTile(
         leading: Icon(icon, color: Colors.purple, size: screenWidth * 0.07),

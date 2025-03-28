@@ -3,22 +3,44 @@ import 'package:jewellery_app/view/utils/prefence_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceValues {
-  static Future<void> disableIntroScreen() async {
+
+
+  static Future<void> disableUserIntroScreen() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferenceKeys.isFirstLaunch, false);
+    await preferences.setBool(PreferenceKeys.isUserFirstLaunch, false);
   }
+
+  static Future<bool> getUserIntroScreenStatus() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool? isFirstLaunch = preferences.getBool(PreferenceKeys.isUserFirstLaunch);
+    return isFirstLaunch ?? true;
+  }
+
+  
+  static Future<void> disableEmployeeIntroScreen() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setBool(PreferenceKeys.isEmployeeFirstLaunch, false);
+  }
+
+  static Future<bool> getEmployeeIntroScreenStatus() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool? isFirstLaunch = preferences.getBool(PreferenceKeys.isEmployeeFirstLaunch);
+    return isFirstLaunch ?? true;
+  }
+
+  
 
   static Future<void> userLogin({
     required String userId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferenceKeys.isLoggedIn, true);
+    await preferences.setBool(PreferenceKeys.isUserLoggedIn, true);
     await preferences.setString(PreferenceKeys.userId, userId);
   }
 
   static Future<void> userLogout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferenceKeys.isLoggedIn, false);
+    await preferences.setBool(PreferenceKeys.isUserLoggedIn, false);
     await preferences.remove(PreferenceKeys.userId);
   }
 
@@ -26,27 +48,28 @@ class PreferenceValues {
     required String employeeId,
   }) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferenceKeys.isLoggedIn, true);
+    await preferences.setBool(PreferenceKeys.isEmployeeLoggedIn, true);
     await preferences.setString(PreferenceKeys.employeeId, employeeId);
   }
 
    static Future<void> employeeLogout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferenceKeys.isLoggedIn, false);
-    await preferences.remove(PreferenceKeys.userId);
+    await preferences.setBool(PreferenceKeys.isEmployeeLoggedIn, false);
+    await preferences.remove(PreferenceKeys.employeeId);
   }
 
-  static Future<bool> getIntroScreenStatus() async {
+  static Future<bool> getUserLoginStatus() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool? isFirstLaunch = preferences.getBool(PreferenceKeys.isFirstLaunch);
-    return isFirstLaunch ?? true;
-  }
-
-  static Future<bool> getLoginStatus() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool? isLoggedIn = preferences.getBool(PreferenceKeys.isLoggedIn);
+    bool? isLoggedIn = preferences.getBool(PreferenceKeys.isUserLoggedIn);
     return isLoggedIn ?? false;
   }
+
+  static Future<bool> getEmployeeLoginStatus() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool? isLoggedIn = preferences.getBool(PreferenceKeys.isEmployeeLoggedIn);
+    return isLoggedIn ?? false;
+  }
+
 
   static Future<String> getUserId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();

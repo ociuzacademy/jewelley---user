@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/single_product/model/respones_single_product_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<SingleProductResponesModel> buyProductService({
   required String product_id,
@@ -11,9 +12,9 @@ Future<SingleProductResponesModel> buyProductService({
   required String size,
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
+    String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user_id": 18,
+      "user_id":userId,
       "product_id": product_id,
       "quantity": quantity,
       "size" : size,

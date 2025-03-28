@@ -1,14 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/employee_module/emp_home.dart';
+import 'package:jewellery_app/view/employee_module/emp_login/page/emp_login.dart';
 import 'package:jewellery_app/view/user_indroduction_page.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
+import 'package:jewellery_app/view/user_module/user_home/page/user_home_screen.dart';
+import 'package:jewellery_app/view/user_separation.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  bool isUserFirstLaunch = await PreferenceValues.getUserIntroScreenStatus();
+  bool isEmployeeFirstLaunch = await PreferenceValues.getEmployeeIntroScreenStatus();
+  bool isUserLoggedIn = await PreferenceValues.getUserLoginStatus();
+  bool isEmployeeLoggedIn = await PreferenceValues.getEmployeeLoginStatus();
+
+   Widget initialScreen;
+   if (isUserFirstLaunch) {
+    initialScreen = const OnboardingPage1();
+  } else {
+    if (isEmployeeFirstLaunch) {
+      initialScreen = const OnboardingPage1();
+    } else {
+      initialScreen = const SignUpSelectionPage();
+    }
+  }
+
+// if (isUserFirstLaunch) {
+//   initialScreen = const OnboardingPage1();
+// } else {
+//   initialScreen = const SignUpSelectionPage();
+// }
+
+// if (isEmployeeFirstLaunch) {
+//   initialScreen = const OnboardingPage1();
+// } else {
+//   initialScreen = const SignUpSelectionPage();
+// }
+
+// if (isUserLoggedIn) {
+//   initialScreen = const UserHomeScreen();
+// } else {
+//   initialScreen = const UserLogin();
+// }
+
+// if (isEmployeeLoggedIn) {
+//   initialScreen = const EmployeeHomePage();
+// } else {
+//   initialScreen = const EmployeeLoginPage();
+// }
+
+  runApp(MyApp(
+    initialScreen: initialScreen,
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
+class MyApp extends StatelessWidget {
+  final Widget initialScreen;
+  const MyApp({
+    super.key,
+    required this.initialScreen,
+  });
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -16,21 +69,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
+        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -46,13 +85,8 @@ class MyApp extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(43, 13, 65, 1.0),
     
         splashTransition: SplashTransition.scaleTransition,
-        // Center(
-        // child: Text(r
-        //   'Splash Screen',style: TextStyle(fontSize: 17),
-    
-        // ),
-        // ),
-        nextScreen: OnboardingPage1(),
+        
+        nextScreen: initialScreen,
       ),
     );
   }
@@ -60,16 +94,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -81,11 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
+      
       _counter++;
     });
   }

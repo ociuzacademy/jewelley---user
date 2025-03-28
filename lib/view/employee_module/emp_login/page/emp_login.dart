@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/employee_module/emp_home.dart';
 import 'package:jewellery_app/view/employee_module/emp_login/service/emp_login_service.dart';
 import 'package:jewellery_app/view/user_module/registration/page/user_register.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -28,6 +29,8 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+
+        await PreferenceValues. employeeLogin(employeeId: responseMessage.employeeId!.toString());
 
         if (responseMessage.message == 'Login successful') {
           ScaffoldMessenger.of(context).showSnackBar(

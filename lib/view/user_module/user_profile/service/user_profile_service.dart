@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/user_profile/model/user_profile_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<UserProfileModel> userProfileService() async {
   try {
     //final user_id =int.parse("2");
-   // String userId = await PreferenceValues.getUserId();
+   String userId = await PreferenceValues.getUserId();
 
     Map<String, dynamic> params = {
       //'id': userId.toString(),
-      'id' : 18.toString(),
+      'id' : userId,
     };
 
     final resp = await http.get(

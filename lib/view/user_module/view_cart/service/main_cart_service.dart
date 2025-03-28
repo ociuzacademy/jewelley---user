@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/view_cart/model/main_cart_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<MainCartModel> mainCartService(
  
 ) async {
   try {
+    String userId = await PreferenceValues.getUserId();
      Map<String, dynamic> params = {
-      'user_id': 18.toString(),
+      'user_id': userId,
      };
     final resp = await http.get(
       Uri.parse(UserUrl.view_cart).replace(queryParameters: params),

@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/employee_module/requset_page/model/request_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<List<RequestViewModel>> requestViewService() async {
   try {
+     String employeeId = await PreferenceValues.getEmployeeId();
     Map<String, dynamic> params = {
-      'employee_id': 1.toString(),
+      'employee_id':employeeId,
     };
     final resp = await http.get(
       Uri.parse(UserUrl.request_view).replace(queryParameters: params),

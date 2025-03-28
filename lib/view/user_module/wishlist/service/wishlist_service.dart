@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/wishlist/model/wishlist_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<List<ViewWishlistModel>> wishlistViewService() async {
   try {
 
-    final int user= 18;
+    String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> params = {
-      'user': user.toString(),
+      'user':userId,
     };
     final resp = await http.get(
       Uri.parse(UserUrl.view_wishlist).replace(queryParameters: params),

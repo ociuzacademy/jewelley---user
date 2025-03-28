@@ -53,7 +53,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
           }
 
           if (!snapshot.hasData ||
-              (snapshot.data!.productBookings == null &&
+              (snapshot.data!.productBookings == null ||
                   snapshot.data!.cartBookings == null)) {
             return const Center(child: Text("No bookings found"));
           }

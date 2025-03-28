@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/cart_product_payment/model/cart_upi_payment.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 
 Future<CartUpiPayment> gpayCartService({
@@ -10,10 +11,10 @@ Future<CartUpiPayment> gpayCartService({
  
 }) async {
   try {
-    //String userId = await PreferenceValues.getUserId();
+    String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
       "upi_id": upi_id,
-      "user_id": 18.toString(),
+      "user_id": userId,
     };
 
     final resp = await http.post(

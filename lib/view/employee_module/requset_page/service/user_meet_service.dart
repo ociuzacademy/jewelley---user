@@ -3,13 +3,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/employee_module/requset_page/model/user_meet_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<ChangeStatusModel> changeStatusService({
   required String user_id,
 }) async {
   try {
+
+     String employeeId = await PreferenceValues.getEmployeeId();
     Map<String, dynamic> param = {
-      "employee_id": 1.toString(),
+      "employee_id": employeeId,
       "user_id": user_id,
     };
 

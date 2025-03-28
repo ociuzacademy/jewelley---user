@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
 import 'package:jewellery_app/view/user_separation.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 class OnboardingPage1 extends StatelessWidget {
   const OnboardingPage1({super.key});
@@ -158,14 +160,17 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                             foregroundColor:  Color.fromRGBO(43, 13, 65, 1.0),
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
-                        onPressed: () {
-                          //widget.onSkip?.call(); 
-                          Navigator.push(context,
+                       onPressed: () async {
+                          // Disable the intro screen
+                          await PreferenceValues.disableUserIntroScreen();
+
+                          // Navigate to the LoginPage
+                          Navigator.pushReplacement(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpSelectionPage(),
+                              builder: (context) => const UserLogin(),
                             ),
                           );
-
                         },
                         child: const Text("SKIP")),
                     TextButton(
@@ -174,18 +179,25 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           foregroundColor:  Color.fromRGBO(43, 13, 65, 1.0),
                           textStyle: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
-                      onPressed: () {
+                     onPressed: () async {
                         if (_currentPage == widget.pages.length - 1) {
-                          //widget.onFinish?.call();
-                           Navigator.push(context,
+                          // Disable the intro screen
+                          await PreferenceValues.disableUserIntroScreen();
+
+                          // Navigate to the UserLoginPage
+                          Navigator.pushReplacement(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpSelectionPage(),
+                              builder: (context) => const UserLogin(),
                             ),
                           );
                         } else {
-                          _pageController.animateToPage(_currentPage + 1,
-                              curve: Curves.easeInOutCubic,
-                              duration: const Duration(milliseconds: 250));
+                          // Go to the next page
+                          _pageController.animateToPage(
+                            _currentPage + 1,
+                            curve: Curves.easeInOutCubic,
+                            duration: const Duration(milliseconds: 250),
+                          );
                         }
                       },
                       child: Row(

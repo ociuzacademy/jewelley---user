@@ -4,13 +4,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/employee_module/history/model/history_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<List<HistoryModel>> historyProductList(
  
 ) async {
   try {
+
+     String employeeId = await PreferenceValues.getEmployeeId();
     Map<String, dynamic> params = {
-      'employee_id': 1.toString(),
+      'employee_id': employeeId,
     };
     final resp = await http.get(
       Uri.parse(UserUrl.emphistory).replace(queryParameters: params),

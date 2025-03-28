@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
 import 'package:jewellery_app/view/user_module/user_feedback/page/user_feedback.dart';
 import 'package:jewellery_app/view/user_module/user_profile/service/user_profile_service.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
@@ -146,12 +148,15 @@ class UserProfileScreen extends StatelessWidget {
                                     child: const Text("Cancel"),
                                   ),
                                   TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(); // Close dialog
-                                      Navigator.pop(
-                                          context); // Perform logout action
-                                    },
+                                     onPressed: () async {
+                                  await PreferenceValues.userLogout();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const UserLogin()),
+                                  );
+                                },
                                     child: const Text("Logout"),
                                   ),
                                 ],

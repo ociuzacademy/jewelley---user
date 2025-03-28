@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/employee_module/emp_profile/model/emp_profile_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<EmpProfileModel> empProfileService() async {
   try {
     //final user_id =int.parse("2");
-   // String userId = await PreferenceValues.getUserId();
+   String employeeId = await PreferenceValues.getEmployeeId();
 
     Map<String, dynamic> params = {
       //'id': userId.toString(),
-      'id' : 1.toString(),
+      'id' : employeeId,
     };
 
     final resp = await http.get(

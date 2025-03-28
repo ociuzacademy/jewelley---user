@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/user_module/checkout_screen/model/confirm_checkout_model.dart';
+import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 Future<ConfirmCheckoutModel> confirmCheckoutService({
   required String booking_id,
@@ -10,9 +11,9 @@ Future<ConfirmCheckoutModel> confirmCheckoutService({
   required String visit_time,
 }) async {
   try {
-   
+    String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
-      "user": 18.toString(),
+      "user": userId,
       "visit_date": visit_date, 
       "visit_time": visit_time, 
       "booking":booking_id,
