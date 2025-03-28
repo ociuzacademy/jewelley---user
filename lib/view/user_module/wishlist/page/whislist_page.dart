@@ -116,6 +116,7 @@ class _WishlistPageState extends State<WishlistPage> {
         title: const Text("My Wishlist"),
         backgroundColor: const Color.fromARGB(255, 101, 28, 111),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<List<ViewWishlistModel>>(
         future: wishlistViewService(),

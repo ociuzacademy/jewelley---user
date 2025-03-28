@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/constants/urls.dart';
 import 'package:jewellery_app/view/employee_module/requset_page/model/request_model.dart';
 import 'package:jewellery_app/view/employee_module/requset_page/service/user_meet_service.dart';
 
@@ -25,30 +24,39 @@ class _UserDetailsViewPageState extends State<UserDetailsViewPage> {
   }
 
   Future<void> _updateStatusAndDisplayUserId(BuildContext context, int userId) async {
-    try {
-      final responseMessage = await changeStatusService(
-        user_id: userId.toString(),
+  try {
+    final responseMessage = await changeStatusService(
+      user_id: userId.toString(),
+    );
+
+    if (responseMessage.status == 'success') {
+      setState(() {
+        status = 'user_meet'; // Updating the status
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('status changed')),
       );
 
-      if (responseMessage.status == 'success') {
-        setState(() {
-          status = 'user_meet'; // Assuming the new status after success
-        });
+      // Refresh the screen after a short delay
+      // Future.delayed(const Duration(milliseconds: 500), () {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => UserDetailsViewPage()), // Replace with actual screen
+      //   );
+      // });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User Meet')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(responseMessage.message ?? "Unknown error")),
-        );
-      }
-    } catch (e) {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to stop: $e')),
+        SnackBar(content: Text(responseMessage.message ?? "Unknown error")),
       );
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to stop: $e')),
+    );
   }
+}
 
   Color _getButtonColor(String? status) {
     switch (status) {
@@ -57,7 +65,7 @@ class _UserDetailsViewPageState extends State<UserDetailsViewPage> {
       case 'user_meet':
         return Colors.orange;
       default:
-        return const Color.fromARGB(255, 87, 3, 82);
+        return const Color.fromARGB(255, 28, 28, 28);
     }
   }
 

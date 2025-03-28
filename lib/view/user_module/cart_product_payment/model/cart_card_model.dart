@@ -10,24 +10,20 @@ String carCardtPaymentToJson(CarCardtPayment data) => json.encode(data.toJson())
 
 class CarCardtPayment {
     String? message;
-    double? totalAmount;
     Data? data;
 
     CarCardtPayment({
         this.message,
-        this.totalAmount,
         this.data,
     });
 
     factory CarCardtPayment.fromJson(Map<String, dynamic> json) => CarCardtPayment(
         message: json["message"],
-        totalAmount: json["total_amount"]?.toDouble(),
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
     );
 
     Map<String, dynamic> toJson() => {
         "message": message,
-        "total_amount": totalAmount,
         "data": data?.toJson(),
     };
 }

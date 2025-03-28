@@ -12,7 +12,7 @@ Future<GpaySingleModel> gpayService({
     //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
       "upi_id": upi_id,
-      "booking": booking_id,
+      "booking_id": booking_id,
     };
 
     final resp = await http.post(

@@ -2,21 +2,22 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_app/view/constants/urls.dart';
-import 'package:jewellery_app/view/user_module/single_product_payment/model/gpay_model.dart';
+import 'package:jewellery_app/view/user_module/cart_product_payment/model/cart_upi_payment.dart';
 
-Future<GpaySingleModel> gpayService({
+
+Future<CartUpiPayment> gpayCartService({
   required String upi_id,
-  required String booking_id,
+ 
 }) async {
   try {
     //String userId = await PreferenceValues.getUserId();
     Map<String, dynamic> param = {
       "upi_id": upi_id,
-      "booking": booking_id,
+      "user_id": 18.toString(),
     };
 
     final resp = await http.post(
-      Uri.parse(UserUrl.single_gpay),
+      Uri.parse(UserUrl.cart_upi),
       body: jsonEncode(param),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=utf-8',
@@ -25,7 +26,7 @@ Future<GpaySingleModel> gpayService({
 
     if (resp.statusCode == 201) {
       final dynamic decoded = jsonDecode(resp.body);
-      final response = GpaySingleModel.fromJson(decoded);
+      final response = CartUpiPayment.fromJson(decoded);
 
       return response;
     } else {

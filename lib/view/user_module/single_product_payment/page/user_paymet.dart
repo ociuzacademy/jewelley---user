@@ -126,10 +126,11 @@ class UserPaymentState extends State<UserPayment> {
           cvv: cvvController.text.trim(),
           expiry_date: expiryDateController.text.trim(),
         );
-        ScaffoldMessenger.of(context).showSnackBar(
+       
+        if (responseMessage.message == 'Success') {
+           ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('UPI Payment Successful')),
         );
-        if (responseMessage.message == 'success') {
           // Fixed comparison
           Navigator.pushReplacement(
             context,
@@ -152,18 +153,16 @@ class UserPaymentState extends State<UserPayment> {
           booking_id: widget.booking_id,
         );
 
-        if (responseMessage.status == 'success') {
+        if (responseMessage.status == 'Success') {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('UPI Payment Successful')),
           );
-          if (responseMessage.status == 'success') {
-            // Fixed comparison
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => HomePage()), // Push widget
             );
-          }
+          
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Unknown error occurred')),

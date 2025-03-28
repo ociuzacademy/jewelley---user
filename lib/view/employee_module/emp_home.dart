@@ -41,20 +41,36 @@ class _EmployeeHomePageState extends State<EmployeeHomePage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "History"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 111, 5, 109),
-        unselectedItemColor: Colors.grey,
-        enableFeedback: false,
-        selectedFontSize: 13,
-        iconSize: 20,
-        showSelectedLabels: true,
-      ),
+  items: const [
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: "Home",
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.search),
+      label: "History",
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: "Profile",
+    ),
+  ],
+  currentIndex: _selectedIndex,
+  onTap: _onItemTapped,
+  selectedItemColor: const Color(0xFF6F056D), // Deep purple
+  unselectedItemColor: Colors.grey,
+  backgroundColor: const Color.fromARGB(255, 240, 201, 246),
+  selectedFontSize: 14,
+  
+  unselectedFontSize: 12,
+  iconSize: 26,
+  showSelectedLabels: true,
+  showUnselectedLabels: true,
+  
+  type: BottomNavigationBarType.fixed, // Prevents shifting animation
+  elevation: 8, // Adds a shadow effect
+),
+
     );
   }
 }

@@ -17,9 +17,11 @@ class _EmpBookingHistoryState extends State<EmpBookingHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Employee Dealt History", style: TextStyle(color: Colors.white)),
+        title: const Text("History", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 87, 3, 82),
+        automaticallyImplyLeading: false,
       ),
+      
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<HistoryModel>>(

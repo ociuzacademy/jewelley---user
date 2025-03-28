@@ -27,6 +27,7 @@ class UserUrl {
   static const String cart_checkout="$userbaseUrl/cart_booking_summary/";
   static const String cart_checkout_details="$userbaseUrl/cart_checkout/";
   static const String cart_card_payment="$userbaseUrl/cart_card_payment/";
+  static const String cart_upi="$userbaseUrl/cart_upi_payment/";
   static const String history="$userbaseUrl/booking_history/";
   
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jewellery_app/view/user_home.dart';
 import 'package:jewellery_app/view/user_module/cart_product_payment/service/cart_card_service.dart';
-import 'package:jewellery_app/view/user_module/single_product_payment/service/card_service.dart';
-import 'package:jewellery_app/view/user_module/single_product_payment/service/gpay_service.dart';
+import 'package:jewellery_app/view/user_module/cart_product_payment/service/cart_upi_service.dart';
+
 
 class UserCartPayment extends StatefulWidget {
   final String total_price;
@@ -125,10 +126,21 @@ class UserCartPaymentState extends State<UserCartPayment> {
           cvv: cvvController.text.trim(),
           expiry_date: expiryDateController.text.trim(),
         );
-
+        if (responseMessage.message == 'Card Payment Successful, All Cart Items Updated') {
+           ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('card Payment Successful')),
+        );
+          // Fixed comparison
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()), // Push widget
+          );
+        }
+        else{
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(responseMessage.message ?? 'Unknown error')),
         );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Card Payment failed: $e')),
@@ -140,17 +152,20 @@ class UserCartPaymentState extends State<UserCartPayment> {
   Future<void> _gpay() async {
     if (_formKey.currentState!.validate()) {
       try {
-        final responseMessage = await gpayService(
+        final responseMessage = await gpayCartService(
           upi_id: upiController.text.trim(),
-          booking_id: widget.booking_id,
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(responseMessage.status == 'success'
-                  ? 'UPI Payment Successful'
-                  : 'Unknown error')),
+        if (responseMessage.message == 'UPI Payment Successful, All Cart Items Updated') {
+           ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('UPI Payment Successful')),
         );
+          // Fixed comparison
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()), // Push widget
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('UPI Payment failed: $e')),

@@ -7,13 +7,18 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final double screenWidth = mediaQuery.size.width;
+    final double screenHeight = mediaQuery.size.height;
+    final double avatarRadius = screenWidth * 0.15;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Profile",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: screenWidth * 0.05,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -29,17 +34,20 @@ class UserProfileScreen extends StatelessWidget {
             );
           }
 
-          // Error State
           if (snapshot.hasError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/noResponse.jpg', height: 200),
-                  const SizedBox(height: 10),
+                  Image.asset('assets/images/noResponse.jpg',
+                      height: screenHeight * 0.3),
+                  SizedBox(height: screenHeight * 0.02),
                   Text(
                     "Error: ${snapshot.error}",
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.04,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -51,24 +59,27 @@ class UserProfileScreen extends StatelessWidget {
             return const Center(child: Text("No user profile found"));
           }
 
-          // Extract data
           final userProfile = snapshot.data!;
 
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(screenWidth * 0.05),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage("assets/images/profile.jpg"),
+                CircleAvatar(
+                  radius: avatarRadius,
+                  backgroundImage:
+                      const AssetImage("assets/images/profile.jpg"),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.03),
                 Text(
                   userProfile.name ?? "No Name",
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.02),
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.email, color: Colors.purple),
@@ -81,38 +92,93 @@ class UserProfileScreen extends StatelessWidget {
                     title: Text(userProfile.phoneNumber ?? "No Phone Number"),
                   ),
                 ),
-                const SizedBox(height: 20), // Add spacing
-                // Feedback Button
-                SizedBox(
-                  width: double.infinity, // Make the button full width
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle feedback button press
-                      Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                             FeedbackScreen(),
-                                      ),
-                                    );
-
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 100, 4, 117), // Purple color
-                      padding: const EdgeInsets.symmetric(vertical: 16), // Add padding
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), // Rounded corners
+                SizedBox(height: screenHeight * 0.03),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: screenWidth * 0.43, // Adjusted width for buttons
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FeedbackScreen()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 100, 4, 117),
+                          padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(screenWidth * 0.02),
+                          ),
+                        ),
+                        child: Text(
+                          "Give Feedback",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: screenWidth * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      "Give Feedback",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: screenWidth * 0.43, // Adjusted width for buttons
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Logout"),
+                                content: const Text(
+                                    "Are you sure you want to log out?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close dialog
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close dialog
+                                      Navigator.pop(
+                                          context); // Perform logout action
+                                    },
+                                    child: const Text("Logout"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(screenWidth * 0.02),
+                          ),
+                        ),
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: screenWidth * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -121,6 +187,4 @@ class UserProfileScreen extends StatelessWidget {
       ),
     );
   }
-
-  
 }

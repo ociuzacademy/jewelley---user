@@ -8,6 +8,9 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -33,7 +36,7 @@ class UserProfileScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/noResponse.jpg', height: 200),
+                  Image.asset('assets/images/noResponse.jpg', height: screenHeight * 0.3),
                   const SizedBox(height: 10),
                   Text(
                     "Error: ${snapshot.error}",
@@ -49,79 +52,98 @@ class UserProfileScreen extends StatelessWidget {
             return const Center(child: Text("No user profile found"));
           }
 
-          // Extract data
           final empProfile = snapshot.data!;
 
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(screenWidth * 0.05),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Profile Image (Handle null photo safely)
                 CircleAvatar(
-                  radius: 50,
+                  radius: screenWidth * 0.15,
                   backgroundImage: empProfile.photo != null && empProfile.photo!.isNotEmpty
                       ? NetworkImage('${UserUrl.empbaseUrl}/${empProfile.photo!}')
                       : const AssetImage('assets/images/default_user.png') as ImageProvider,
                 ),
-                const SizedBox(height: 20),
-
-                // Name
+                SizedBox(height: screenHeight * 0.03),
                 Text(
                   empProfile.name ?? "No Name",
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: screenWidth * 0.06, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.02),
 
-                // Email
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.email, color: Colors.purple),
-                    title: Text(empProfile.email ?? "No Email"),
-                  ),
+                // Email, Phone, Address, etc.
+                _infoCard(Icons.email, "Email", empProfile.email ?? "No Email", screenWidth),
+                _infoCard(Icons.phone, "Phone", empProfile.phone ?? "No Phone Number", screenWidth),
+                _infoCard(Icons.location_on, "Address", empProfile.address ?? "No Address", screenWidth),
+                _infoCard(
+                  Icons.calendar_today,
+                  "Date Joined",
+                  empProfile.dateJoined != null
+                      ? "${empProfile.dateJoined!.day}-${empProfile.dateJoined!.month}-${empProfile.dateJoined!.year}"
+                      : "No Date of Joining",
+                  screenWidth,
                 ),
-
-                // Phone
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.phone, color: Colors.purple),
-                    title: Text(empProfile.phone ?? "No Phone Number"),
-                  ),
-                ),
-
-                // Address
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.location_on, color: Colors.purple),
-                    title: Text(empProfile.address ?? "No Address"),
-                  ),
-                ),
-
-                // Date Joined (Safe formatting)
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.calendar_today, color: Colors.purple),
-                    title: Text(
-                      empProfile.dateJoined != null
-                          ? "${empProfile.dateJoined!.day}-${empProfile.dateJoined!.month}-${empProfile.dateJoined!.year}"
-                          : "No Date of Joining",
+                _infoCard(Icons.work, "Position", empProfile.position ?? "No Position added", screenWidth),
+                
+                SizedBox(height: screenHeight * 0.03),
+                SizedBox(
+                  width: screenWidth * 0.6,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Logout"),
+                            content: const Text("Are you sure you want to log out?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Logout"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 148, 94, 159),
+                      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                      ),
+                    ),
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.045,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-
-                // Position
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.work, color: Colors.purple),
-                    title: Text(empProfile.position ?? "No Position added"),
-                  ),
-                ),
-
-                const SizedBox(height: 20), // Add spacing
               ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _infoCard(IconData icon, String label, String value, double screenWidth) {
+    return Card(
+      child: ListTile(
+        leading: Icon(icon, color: Colors.purple, size: screenWidth * 0.07),
+        title: Text(value, style: TextStyle(fontSize: screenWidth * 0.045)),
       ),
     );
   }
