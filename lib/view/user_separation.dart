@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/employee_module/emp_login/page/emp_login.dart';
-import 'package:jewellery_app/view/employee_module/employee_login/page/emp_login.dart';
 import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
 
 

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jewellery_app/view/employee_module/emp_home.dart';
-import 'package:jewellery_app/view/employee_module/emp_login/page/emp_login.dart';
 import 'package:jewellery_app/view/user_indroduction_page.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
-import 'package:jewellery_app/view/user_module/user_home/page/user_home_screen.dart';
 import 'package:jewellery_app/view/user_separation.dart';
 import 'package:jewellery_app/view/utils/prefence_value.dart';
 

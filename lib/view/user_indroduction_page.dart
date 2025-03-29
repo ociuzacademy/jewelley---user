@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/user_module/login/page/user_login.dart';
-import 'package:jewellery_app/view/user_separation.dart';
 import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 class OnboardingPage1 extends StatelessWidget {

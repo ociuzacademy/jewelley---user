@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewellery_app/view/employee_module/emp_home.dart';
 import 'package:jewellery_app/view/employee_module/emp_login/service/emp_login_service.dart';
-import 'package:jewellery_app/view/user_module/registration/page/user_register.dart';
 import 'package:jewellery_app/view/utils/prefence_value.dart';
 
 class EmployeeLoginPage extends StatefulWidget {

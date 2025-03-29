@@ -251,8 +251,9 @@ class UserHomeScreen extends StatelessWidget {
                                       '${UserUrl.baseUrl}/${category.iconUrl!}',
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
+                                        if (loadingProgress == null) {
                                           return child;
+                                        }
                                         return const Center(
                                           child: CircularProgressIndicator(),
                                         );
